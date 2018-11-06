@@ -8,7 +8,7 @@ import { AuthService } from './services/authservice';
 import { IAuthRepo } from '../repositories/iauthrepo';
 import { AuthRepo } from './repositpries/authrepo';
 import { IWebApi } from '../webapi/iwebapi';
-import { AxiosWebApi } from 'business-core-app/lib/infrastructure/webapi/axioswebapi';
+import { AxiosWebApi } from './webapi/axioswebapi';
 
 
 

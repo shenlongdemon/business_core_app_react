@@ -2,10 +2,10 @@
     Using typed-rest-client at https://github.com/Microsoft/typed-rest-client
 */
 
-import { IWebApi } from "business-core-app/lib/webapi/iwebapi";
-import { ApiResult } from "business-core-app/lib/webapi/apiresult";
+import { IWebApi } from "../../webapi";
+import { ApiResult } from "../../webapi/apiresult";
 import { injectable } from "inversify";
-import { ErrorResult } from "business-core-app/lib/models";
+import { ErrorResult } from "../../models";
 import { HTTPC_CODE, API_STATUS_CODE, CONSTANTS } from "../../common/constants";
 import axios from 'axios';
 @injectable()
