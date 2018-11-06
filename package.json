@@ -1,5 +1,5 @@
 {
-  "name": "business-core-app",
+  "name": "business_core_app_react",
   "version": "1.0.0",
   "description": "core business for app",
   "main": "./index.d.ts",
