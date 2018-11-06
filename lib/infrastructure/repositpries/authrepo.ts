@@ -4,12 +4,12 @@ import {IWebApi} from '../../webapi/iwebapi';
 import { injectable, inject } from 'inversify';
 import { STORAGE_KEYS, CONSTANTS } from '../../common';
 import 'reflect-metadata';
-import { TYPES } from '../identifiers';
+import { PUBLIC_TYPES, PRIVATE_TYPES } from '../identifiers';
 
 @injectable()
 export class AuthRepo implements IAuthRepo {
-    @inject(TYPES.IWebApi) private api!: IWebApi;
-    @inject(TYPES.IStore) private store!: IStore;
+    @inject(PUBLIC_TYPES.IWebApi) private api!: IWebApi;
+    @inject(PUBLIC_TYPES.IStore) private store!: IStore;
 
     
     loginMaster = async (namespace: string, password: string): Promise<string> => {
@@ -18,7 +18,7 @@ export class AuthRepo implements IAuthRepo {
     }
 
     getMasterToken = async (): Promise<string> => {
-        let masterToken = await this.store.getItem(STORAGE_KEYS.Master_Token, CONSTANTS.STR_EMPTY);
+        let masterToken = await this.store.getMasterToken(CONSTANTS.STR_EMPTY);
         return masterToken;
     }
 }

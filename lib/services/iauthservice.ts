@@ -1,3 +1,6 @@
+/// <reference path="../infrastructure/services/authservice.ts" />
+
+
 export interface  IAuthService {
     /**
      * Submitting master login

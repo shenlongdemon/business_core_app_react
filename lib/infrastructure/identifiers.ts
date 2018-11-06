@@ -1,10 +1,13 @@
 
-const TYPES = {
-    ITestService : Symbol('ITestService'),
-    IAuthService : Symbol('IAuthService'),
-    IAuthRepo : Symbol('IAuthRepo'),
-    IStore : Symbol('IStore'),
-    IWebApi : Symbol('IWebApi')
+const PUBLIC_TYPES = {
+    ITestService : ('ITestService'),
+    IAuthService : ('IAuthService'),
+    IWebApi : ('IWebApi'),
+    IStore : ('IStore')
+};
+const PRIVATE_TYPES = {
+    IAuthRepo : ('IAuthRepo')
+    
 };
 
-export {TYPES};
+export {PUBLIC_TYPES, PRIVATE_TYPES};
