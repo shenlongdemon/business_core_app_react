@@ -4,8 +4,7 @@
   "description": "core business for app",
   "main": "./index.d.ts",
   "scripts": {
-    "preinstall": "rm -rf ./core-*.tgz && rm -rf ./package-lock.json",
-    "build": "npm install && tsc && npm pack ./ | tail -1"
+    "preinstall": "rm -rf ./package-lock.json"
   },
   "author": "nfq",
   "license": "MIT",
