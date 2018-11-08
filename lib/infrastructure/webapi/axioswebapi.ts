@@ -21,7 +21,7 @@ export class AxiosWebApi implements IWebApi {
 
     }
 
-    setHeader(genHeader: () => Promise<any>): void {
+    setGenHeader(genHeader: () => Promise<any>): void {
         this.genHeader = genHeader;
     }
 
@@ -36,9 +36,9 @@ export class AxiosWebApi implements IWebApi {
     get = async (url: string): Promise<ApiResult> => {
 
         return {
-            data: null,
-            message: '',
-            statusCode: 0
+            Data: null,
+            Message: '',
+            Status: 0
         };
     }
 
@@ -57,19 +57,19 @@ export class AxiosWebApi implements IWebApi {
                     message: response.statusText
                 });
                 apiResult = {
-                    data: response.data,
-                    message: response.statusText,
-                    statusCode: API_STATUS_CODE.EXCEPTION
+                    Data: response.data,
+                    Message: response.statusText,
+                    Status: API_STATUS_CODE.EXCEPTION
                 };
             }
             else {
                 apiResult = response.data;
-                if (apiResult.statusCode !== HTTPC_CODE.OK && this.handleBusiness) {
+                if (apiResult.Status !== HTTPC_CODE.OK && this.handleBusiness) {
                     this.handleBusiness({
-                        businessCode: apiResult.statusCode,
-                        error: apiResult.data,
+                        businessCode: apiResult.Status,
+                        error: apiResult.Data,
                         httpCode: HTTPC_CODE.OK,
-                        message: apiResult.message
+                        message: apiResult.Message
                     });
                 }
             }
@@ -80,9 +80,9 @@ export class AxiosWebApi implements IWebApi {
                 this.handleException(errorResilt);
             }
             apiResult = {
-                data: e,
-                message: CONSTANTS.STR_EMPTY,
-                statusCode: API_STATUS_CODE.EXCEPTION
+                Data: e,
+                Message: CONSTANTS.STR_EMPTY,
+                Status: API_STATUS_CODE.EXCEPTION
             };
         }
 
@@ -91,17 +91,17 @@ export class AxiosWebApi implements IWebApi {
 
     put = async (url: string, data: any): Promise<ApiResult> => {
         return {
-            data: null,
-            message: '',
-            statusCode: 0
+            Data: null,
+            Message: '',
+            Status: 0
         };
     }
 
     delete = async (url: string): Promise<ApiResult> => {
         return {
-            data: null,
-            message: '',
-            statusCode: 0
+            Data: null,
+            Message: '',
+            Status: 0
         };
     }
 

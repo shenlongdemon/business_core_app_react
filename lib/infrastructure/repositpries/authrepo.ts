@@ -17,7 +17,7 @@ export class AuthRepo implements IAuthRepo {
             username: username,
             password: password
         };
-        let res = await this.api.post(API.LOGIN_MASTER, data);
+        let res = await this.api.post(API.LOGIN, data);
 
         return res;
     }

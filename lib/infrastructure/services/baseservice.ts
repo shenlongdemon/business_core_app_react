@@ -6,7 +6,7 @@ export class BaseService {
      * transferm to UserSdo
      * @param data
      */
-    transform = <UserSdo>(data: any): UserSdo|null => {
+    protected transform = <UserSdo>(data: any): UserSdo|null => {
         try {
             let userSdo: UserSdo = Object.freeze(data);
 
