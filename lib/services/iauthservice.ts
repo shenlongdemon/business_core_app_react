@@ -1,5 +1,7 @@
 /// <reference path="../infrastructure/services/authservice.ts" />
 
+import {LoginSdo, UserSdo} from './sdo';
+
 
 export interface  IAuthService {
     /**
@@ -7,10 +9,6 @@ export interface  IAuthService {
      * @param namespance name of company
      * @param password password
      */
-    loginMaster(namespance: string, password: string): Promise<string>;
+    login(username: string, password: string): Promise<LoginSdo>;
 
-    /**
-     * Check the device is logged for master or not
-     */
-    isMasterLogged(): Promise<boolean>;
 }

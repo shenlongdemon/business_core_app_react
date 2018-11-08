@@ -1,5 +1,7 @@
+import { ENV } from "business_core_app_react/lib/config";
+
 const STORAGE_KEYS = {
-    Master_Token : 'Master_Token'
+    USER: 'user'
 };
 
 const CONSTANTS = {
@@ -17,4 +19,8 @@ const API_STATUS_CODE = {
     EXCEPTION: -1
 }
 
-export {STORAGE_KEYS, CONSTANTS, HTTPC_CODE, API_STATUS_CODE};
+const API = {
+    LOGIN: ENV.HOST + '/api/manifactory/login'
+}
+
+export {STORAGE_KEYS, CONSTANTS, HTTPC_CODE, API_STATUS_CODE, API};

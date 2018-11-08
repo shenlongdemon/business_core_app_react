@@ -1,25 +1,34 @@
-import {IAuthService} from '../../services/iauthservice';
-import {IStore} from '../../repositories/istore';
-import {IAuthRepo} from '../../repositories/iauthrepo';
-import { injectable, inject } from 'inversify';
-import { PUBLIC_TYPES, PRIVATE_TYPES } from '../identifiers';
-import { CONSTANTS } from '../../common';
+import {IAuthService, UserSdo, LoginSdo} from '../../services';
+import {IStore} from '../../repositories';
+import {IAuthRepo} from '../../repositories';
+import {injectable, inject} from 'inversify';
+import {PUBLIC_TYPES, PRIVATE_TYPES} from '../identifiers';
+import {CONSTANTS, API_STATUS_CODE} from '../../common';
+import {ApiResult} from '../../webapi';
+import {BaseService} from './baseservice';
 
 @injectable()
-export class AuthService implements IAuthService {
-    
+export class AuthService extends BaseService implements IAuthService {
+
     @inject(PRIVATE_TYPES.IAuthRepo) private authRepo!: IAuthRepo;
     @inject(PUBLIC_TYPES.IStore) private store!: IStore;
 
 
-    loginMaster = async (namespace: string, password: string): Promise<string> => {
-        let masterToken = await this.authRepo.loginMaster(namespace, password);
-        this.store.saveMasterToken(masterToken);
-        return masterToken;
-    }
+    login = async (username: string, password: string): Promise<LoginSdo> => {
+        let res: ApiResult = await this.authRepo.login(username, password);
 
-    isMasterLogged = async (): Promise<boolean> => {
-        let masterToken = await this.store.getMasterToken(CONSTANTS.STR_EMPTY);
-        return masterToken !== CONSTANTS.STR_EMPTY
+        let loginSdo: LoginSdo = {
+            isSuccess: res.Status === API_STATUS_CODE.OK,
+            user: this.transform(res.Data),
+            message: res.Message,
+            __debug: res
+        };
+
+        // save UserSdo to local storage
+        if (loginSdo.user) {
+            this.store.saveUser(loginSdo.user);
+        }
+
+        return loginSdo
     }
 }

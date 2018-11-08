@@ -1,4 +1,6 @@
+///<reference path="../infrastructure/repositpries/authrepo.ts"/>
+
+
 export interface IAuthRepo {
-    loginMaster(namespace: string, password: string): Promise<string>; 
-    getMasterToken(): Promise<string>;
+    login(user: string, password: string): Promise<ApiRes>;
 }

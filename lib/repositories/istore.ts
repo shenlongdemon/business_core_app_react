@@ -5,7 +5,12 @@
     
     Scope: singleton
  */
+import {UserSdo} from '../services';
+
 export interface IStore {
-    saveMasterToken(key: string): Promise<void>;
-    getMasterToken(defaultValue: string): Promise<string>;
+    /**
+     * save user to store and use it as product owner
+     * @param user
+     */
+    saveUser(user: UserSdo): Promise<void>;
 }
