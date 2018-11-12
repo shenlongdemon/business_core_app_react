@@ -1,11 +1,12 @@
 import {IStore} from '../../repositories';
-import {IAuthRepo, LoginRequest, LoginSdo, UserSdo} from '../../repositories';
+import {IAuthRepo, LoginRequest, LoginSdo} from '../../repositories';
 import {IWebApi, ApiResult} from '../../webapi';
 import {injectable, inject} from 'inversify';
 import {STORAGE_KEYS, CONSTANTS, API} from '../../common';
 import 'reflect-metadata';
 import {PUBLIC_TYPES, PRIVATE_TYPES} from '../identifiers';
 import {BaseRepository} from './baserepository';
+import {ENV} from '../../config';
 
 
 @injectable()
@@ -19,12 +20,11 @@ export class AuthRepo extends BaseRepository implements IAuthRepo {
             phone: username,
             password: password
         };
-        let res = await this.api.post(API.LOGIN, data);
+        let res = await this.api.post(API.LOGIN(), data);
         let loginSdo: LoginSdo = {
             ...this.transform(res),
             user: res.Data
         };
-
         return loginSdo;
     }
 }
