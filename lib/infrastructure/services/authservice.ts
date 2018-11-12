@@ -1,11 +1,12 @@
-import {IAuthService, UserSdo, LoginSdo} from '../../services';
+import {IAuthService, User} from '../../services';
 import {IStore} from '../../repositories';
-import {IAuthRepo} from '../../repositories';
+import {IAuthRepo, LoginSdo} from '../../repositories';
 import {injectable, inject} from 'inversify';
 import {PUBLIC_TYPES, PRIVATE_TYPES} from '../identifiers';
 import {CONSTANTS, API_STATUS_CODE} from '../../common';
 import {ApiResult} from '../../webapi';
 import {BaseService} from './baseservice';
+import {BaseDto} from '../../services';
 
 @injectable()
 export class AuthService extends BaseService implements IAuthService {
@@ -14,21 +15,33 @@ export class AuthService extends BaseService implements IAuthService {
     @inject(PUBLIC_TYPES.IStore) private store!: IStore;
 
 
-    login = async (username: string, password: string): Promise<LoginSdo> => {
-        let res: ApiResult = await this.authRepo.login(username, password);
+    login = async (username: string, password: string): Promise<BaseDto> => {
+        let res: LoginSdo = await this.authRepo.login(username, password);
 
-        let loginSdo: LoginSdo = {
-            isSuccess: res.Status === API_STATUS_CODE.OK,
-            user: this.transform(res.Data),
-            message: res.Message,
-            __debug: res
-        };
 
-        // save UserSdo to local storage
-        if (loginSdo.user) {
-            this.store.saveUser(loginSdo.user);
+
+        if (res.isSuccess && res.user) {
+
+            let user: User|null = this.mappingUser(res.user);
+            if (user) {
+                this.store.saveUser(user);
+            }
         }
 
-        return loginSdo
+        let loginDto: BaseDto = this.transformLogin(res);
+
+        return loginDto
+    }
+
+    isLoggedIn = async (): Promise<boolean> => {
+        let user: User | null = await this.store.getUser();
+
+        var isLogged: boolean = false;
+        if (user) {
+            isLogged = true;
+        }
+
+        return isLogged;
+
     }
 }

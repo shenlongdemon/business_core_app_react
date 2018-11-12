@@ -1,6 +1,6 @@
 /// <reference path="../infrastructure/services/authservice.ts" />
 
-import {LoginSdo, UserSdo} from './sdo';
+import {LoginSdo, BaseSdo} from '../repositories/sdo';
 
 
 export interface  IAuthService {
@@ -9,6 +9,12 @@ export interface  IAuthService {
      * @param namespance name of company
      * @param password password
      */
-    login(username: string, password: string): Promise<LoginSdo>;
+    login(username: string, password: string): Promise<BaseSdo>;
+
+
+    /**
+     * check user logged in or not
+     */
+    isLoggedIn(): Promise<boolean>;
 
 }

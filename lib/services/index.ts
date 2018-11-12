@@ -1,3 +1,5 @@
 export * from './iauthservice';
 export * from './itestservice';
-export * from './sdo';
+export * from './dto';
+export * from './model';
+

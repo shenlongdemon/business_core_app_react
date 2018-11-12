@@ -3,4 +3,5 @@ export interface ErrorResult {
     businessCode: number;
     message: string;
     error: any;
+    __debug: any;
 }

@@ -15,12 +15,8 @@ const HTTPC_CODE = {
 }
 
 const API_STATUS_CODE = {
-    OK: 0,
+    OK: 1,
     EXCEPTION: -1
 }
 
-const API = {
-    LOGIN: ENV.HOST + '/api/manifactory/login'
-}
-
-export {STORAGE_KEYS, CONSTANTS, HTTPC_CODE, API_STATUS_CODE, API};
+export {STORAGE_KEYS, CONSTANTS, HTTPC_CODE, API_STATUS_CODE};

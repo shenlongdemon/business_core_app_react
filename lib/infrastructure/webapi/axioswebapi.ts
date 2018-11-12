@@ -43,8 +43,8 @@ export class AxiosWebApi implements IWebApi {
     }
 
     post = async (url: string, data: any): Promise<ApiResult> => {
+        var apiResult: ApiResult;
         try {
-            var apiResult: ApiResult;
 
             let instance: AxiosInstance = await this.getInstance();
             let response: AxiosResponse<ApiResult> = await instance.post<ApiResult>(url, data);
@@ -54,7 +54,8 @@ export class AxiosWebApi implements IWebApi {
                     businessCode: API_STATUS_CODE.EXCEPTION,
                     error: response.data,
                     httpCode: response.status,
-                    message: response.statusText
+                    message: response.statusText,
+                    __debug: response
                 });
                 apiResult = {
                     Data: response.data,
@@ -64,12 +65,13 @@ export class AxiosWebApi implements IWebApi {
             }
             else {
                 apiResult = response.data;
-                if (apiResult.Status !== HTTPC_CODE.OK && this.handleBusiness) {
+                if (apiResult.Status !== API_STATUS_CODE.OK && this.handleBusiness) {
                     this.handleBusiness({
                         businessCode: apiResult.Status,
                         error: apiResult.Data,
                         httpCode: HTTPC_CODE.OK,
-                        message: apiResult.Message
+                        message: apiResult.Message,
+                        __debug: response
                     });
                 }
             }
@@ -117,7 +119,8 @@ export class AxiosWebApi implements IWebApi {
                 businessCode: API_STATUS_CODE.EXCEPTION,
                 error: error.response.data,
                 httpCode: error.response.status,
-                message: error.response.statusText
+                message: error.response.statusText,
+                __debug: error
             };
 
         } else if (error.request) {
@@ -128,7 +131,8 @@ export class AxiosWebApi implements IWebApi {
                 businessCode: API_STATUS_CODE.EXCEPTION,
                 error: error.request,
                 httpCode: HTTPC_CODE.NOT_RECEIVED,
-                message: error.message
+                message: error.message,
+                __debug: error
             };
         } else {
             // Something happened in setting up the request that triggered an Error
@@ -136,7 +140,8 @@ export class AxiosWebApi implements IWebApi {
                 businessCode: API_STATUS_CODE.EXCEPTION,
                 error: error,
                 httpCode: HTTPC_CODE.NOT_RECEIVED,
-                message: error.message
+                message: error.message,
+                __debug: error
             };
         }
         return errorResilt;
@@ -150,7 +155,8 @@ export class AxiosWebApi implements IWebApi {
             headers = await this.genHeader();
         }
         let config: AxiosRequestConfig = {
-            headers: headers
+            headers: headers,
+            timeout: 3000
         };
         let instance: AxiosInstance = axios.create(config);
 
