@@ -35,11 +35,19 @@ export class AxiosWebApi implements IWebApi {
 
     get = async (url: string): Promise<ApiResult> => {
 
-        return {
-            Data: null,
-            Message: '',
-            Status: 0
-        };
+        var apiResult: ApiResult;
+        try {
+
+            let instance: AxiosInstance = await this.getInstance();
+            let response: AxiosResponse<ApiResult> = await instance.get<ApiResult>(url);
+
+            apiResult = this.handle(response);
+        }
+        catch (e) {
+            apiResult = this.catchException(e);
+        }
+
+        return apiResult;
     }
 
     post = async (url: string, data: any): Promise<ApiResult> => {
@@ -49,43 +57,10 @@ export class AxiosWebApi implements IWebApi {
             let instance: AxiosInstance = await this.getInstance();
             let response: AxiosResponse<ApiResult> = await instance.post<ApiResult>(url, data);
 
-            if (response.status !== HTTPC_CODE.OK && this.handleException) {
-                this.handleException({
-                    businessCode: API_STATUS_CODE.EXCEPTION,
-                    error: response.data,
-                    httpCode: response.status,
-                    message: response.statusText,
-                    __debug: response
-                });
-                apiResult = {
-                    Data: response.data,
-                    Message: response.statusText,
-                    Status: API_STATUS_CODE.EXCEPTION
-                };
-            }
-            else {
-                apiResult = response.data;
-                if (apiResult.Status !== API_STATUS_CODE.OK && this.handleBusiness) {
-                    this.handleBusiness({
-                        businessCode: apiResult.Status,
-                        error: apiResult.Data,
-                        httpCode: HTTPC_CODE.OK,
-                        message: apiResult.Message,
-                        __debug: response
-                    });
-                }
-            }
+            apiResult = this.handle(response);
         }
         catch (e) {
-            if (this.handleException) {
-                let errorResilt: ErrorResult = this.transform(e);
-                this.handleException(errorResilt);
-            }
-            apiResult = {
-                Data: e,
-                Message: CONSTANTS.STR_EMPTY,
-                Status: API_STATUS_CODE.EXCEPTION
-            };
+            apiResult = this.catchException(e);
         }
 
         return apiResult;
@@ -147,6 +122,51 @@ export class AxiosWebApi implements IWebApi {
         return errorResilt;
     }
 
+    private catchException = (e: any): ApiResult => {
+        if (this.handleException) {
+            let errorResilt: ErrorResult = this.transform(e);
+            this.handleException(errorResilt);
+        }
+        const apiResult = {
+            Data: e,
+            Message: CONSTANTS.STR_EMPTY,
+            Status: API_STATUS_CODE.EXCEPTION
+        };
+
+        return apiResult;
+    }
+
+    private handle = (response: AxiosResponse<ApiResult>): ApiResult => {
+        var apiResult: ApiResult;
+
+        if (response.status !== HTTPC_CODE.OK && this.handleException) {
+            this.handleException({
+                businessCode: API_STATUS_CODE.EXCEPTION,
+                error: response.data,
+                httpCode: response.status,
+                message: response.statusText,
+                __debug: response
+            });
+            apiResult = {
+                Data: response.data,
+                Message: response.statusText,
+                Status: API_STATUS_CODE.EXCEPTION
+            };
+        }
+        else {
+            apiResult = response.data;
+            if (apiResult.Status !== API_STATUS_CODE.OK && this.handleBusiness) {
+                this.handleBusiness({
+                    businessCode: apiResult.Status,
+                    error: apiResult.Data,
+                    httpCode: HTTPC_CODE.OK,
+                    message: apiResult.Message,
+                    __debug: response
+                });
+            }
+        }
+        return apiResult;
+    }
 
     private getInstance = async (): Promise<AxiosInstance> => {
 

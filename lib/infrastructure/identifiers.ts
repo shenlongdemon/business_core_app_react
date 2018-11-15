@@ -1,13 +1,15 @@
+import {IBusinessService} from "business_core_app_react";
 
 const PUBLIC_TYPES = {
     ITestService : ('ITestService'),
     IAuthService : ('IAuthService'),
     IWebApi : ('IWebApi'),
-    IStore : ('IStore')
+    IStore : ('IStore'),
+    IBusinessService : ('IBusinessService'),
 };
 const PRIVATE_TYPES = {
-    IAuthRepo : ('IAuthRepo')
-    
+    IAuthRepo : ('IAuthRepo'),
+    IBusinessRepo : ('IBusinessRepo'),
 };
 
 export {PUBLIC_TYPES, PRIVATE_TYPES};
