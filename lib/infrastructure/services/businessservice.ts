@@ -1,6 +1,6 @@
 import {IBusinessService, Goods, GoodsListDto, User} from '../../services'
 import {inject, injectable} from 'inversify';
-import {PRIVATE_TYPES, PUBLIC_TYPES} from "../../infrastructure";
+import {PRIVATE_TYPES, PUBLIC_TYPES} from '../identifiers';
 import {IBusinessRepo, GoodsListSdo, IStore} from '../../repositories';
 import {BaseService} from './baseservice';
 import {CONSTANTS} from '../../common'

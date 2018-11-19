@@ -1,5 +1,3 @@
-import {IBusinessService} from "business_core_app_react";
-
 const PUBLIC_TYPES = {
     ITestService : ('ITestService'),
     IAuthService : ('IAuthService'),
