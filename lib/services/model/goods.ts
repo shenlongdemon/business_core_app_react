@@ -1,3 +1,3 @@
-export interface Goods {
+export interface Process {
     id: string;
 }

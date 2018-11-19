@@ -1,16 +1,14 @@
 import {BaseSdo, LoginSdo} from '../../repositories'
-import {BaseDto, User, Goods} from '../../services'
+import {BaseDto, User, Goods, Process} from '../../services'
 import {injectable} from "inversify";
-import {ApiResult} from "business_core_app_react/lib/webapi/apiresult";
-import {API_STATUS_CODE} from "business_core_app_react";
 
 @injectable()
 export class BaseService {
     constructor() {
     }
 
-    protected transform = (sdo: BaseSdo): BaseDto => {
-        let dto: BaseDto = {
+    protected populate = (sdo: BaseSdo): BaseDto => {
+        const dto: BaseDto = {
             isSuccess: sdo.isSuccess,
             message: sdo.message
         };
@@ -18,29 +16,60 @@ export class BaseService {
         return dto;
     }
 
-    protected transformLogin = (sdo: LoginSdo): BaseDto => {
-        let dto: BaseDto = this.transformByJSON<BaseDto, LoginSdo>(sdo);
-        return dto;
+    protected mappingGoodses = (data: any[]): Goods[] => {
+        const goodses: Goods[] = [];
+        const goodsesData: (Goods | null)[] = data.map((g: any) => {
+            const goods: Goods| null = this.mappingGoods(g);
+            return goods;
+        });
+    
+        goodsesData.map((goods: Goods| null) => {
+            if (goods) {
+                goodses.push(goods);
+            }
+        });
+        
+        return goodses;
     }
-
-    protected mappingUser = (data: any): User => {
-        let user: User = this.mappingByJSON(data);
+    
+    protected mappingProcesses = (data: any[]): Process[] => {
+        const processes: Process[] = [];
+        const processesData: (Process | null)[] = data.map((g: any) => {
+            const process: Process| null = this.mappingProcess(g);
+            return process;
+        });
+    
+        processesData.map((process: Process| null) => {
+            if (process) {
+                processes.push(process);
+            }
+        });
+        
+        return processes;
+    }
+    
+    protected mappingProcess = (data: any): Process | null => {
+        const process: Process | null = this.mappingByJSON(data);
+        return process;
+    }
+    
+    protected mappingUser = (data: any): User | null => {
+        const user: User | null = this.mappingByJSON(data);
         return user;
     }
 
-    protected mappingGoods = (data: any): Goods => {
-        let goods: Goods = this.mappingByJSON(data);
+    protected mappingGoods = (data: any): Goods | null => {
+        const goods: Goods | null = this.mappingByJSON(data);
         return goods;
     }
 
-    private mappingByJSON = <T>(data: any): T => {
-        let dto: T = <T>JSON.parse(JSON.stringify(data));
-        return dto;
-    }
-
-
-    private transformByJSON = <T, U>(sdo: U): T => {
-        let dto: T = <T>JSON.parse(JSON.stringify(sdo));
-        return dto;
+    private mappingByJSON = <T>(data: any): T | null => {
+        try {
+            const dto: T = <T>JSON.parse(JSON.stringify(data));
+            return dto;
+        }
+        catch (e) {
+            return null;
+        }
     }
 }
