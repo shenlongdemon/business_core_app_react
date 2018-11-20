@@ -11,8 +11,8 @@ export class BusinessRepo extends BaseRepository implements IBusinessRepo {
     
     @inject(PUBLIC_TYPES.IWebApi) private api!: IWebApi;
     
-    getGoodses = async (userId: string): Promise<GoodsListSdo> => {
-        const res: ApiResult = await this.api.get(API.GET_GOODSES(userId));
+    getItems = async (userId: string): Promise<GoodsListSdo> => {
+        const res: ApiResult = await this.api.get(API.GET_ITEMS(userId));
         let gdodsListSdo: GoodsListSdo = {
             ...this.transform(res),
             goodses: res.Data ? res.Data : []

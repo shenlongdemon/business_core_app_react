@@ -4,7 +4,7 @@ const API = {
     LOGIN: (): string => {
         return ENV.HOST + '/api/manifactory/login'
     },
-    GET_GOODSES: (userId: string): string => {
+    GET_ITEMS: (userId: string): string => {
         return ENV.HOST + '/api/sellrecognizer/getItemsByOwnerId?ownerId=' + userId + '&pageNum=1&pageSize=10000"';
     },
     GET_PROCESSES: (userId: string): string => {

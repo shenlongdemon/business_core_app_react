@@ -1,3 +1,3 @@
 export * from './basedto';
-export * from './goodslistdto';
+export * from './itemlistdto';
 export * from './processlistdto'

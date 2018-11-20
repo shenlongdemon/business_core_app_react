@@ -1,5 +1,5 @@
 import {BaseSdo, LoginSdo} from '../../repositories'
-import {BaseDto, User, Goods, Process} from '../../services'
+import {BaseDto, User, Item, Process} from '../../services'
 import {injectable} from "inversify";
 
 @injectable()
@@ -16,20 +16,20 @@ export class BaseService {
         return dto;
     }
 
-    protected mappingGoodses = (data: any[]): Goods[] => {
-        const goodses: Goods[] = [];
-        const goodsesData: (Goods | null)[] = data.map((g: any) => {
-            const goods: Goods| null = this.mappingGoods(g);
-            return goods;
+    protected mappingItems = (data: any[]): Item[] => {
+        const items: Item[] = [];
+        const itemData: (Item | null)[] = data.map((g: any) => {
+            const item: Item| null = this.mappingItem(g);
+            return item;
         });
     
-        goodsesData.map((goods: Goods| null) => {
-            if (goods) {
-                goodses.push(goods);
+        itemData.map((item: Item| null) => {
+            if (item) {
+                items.push(item);
             }
         });
         
-        return goodses;
+        return items;
     }
     
     protected mappingProcesses = (data: any[]): Process[] => {
@@ -58,9 +58,9 @@ export class BaseService {
         return user;
     }
 
-    protected mappingGoods = (data: any): Goods | null => {
-        const goods: Goods | null = this.mappingByJSON(data);
-        return goods;
+    protected mappingItem = (data: any): Item | null => {
+        const item: Item | null = this.mappingByJSON(data);
+        return item;
     }
 
     private mappingByJSON = <T>(data: any): T | null => {

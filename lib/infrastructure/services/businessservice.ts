@@ -1,4 +1,4 @@
-import {IBusinessService, Goods, Process, GoodsListDto, ProcessListDto, User} from '../../services'
+import {IBusinessService, Item, Process, ItemListDto, ProcessListDto, User} from '../../services'
 import {inject, injectable} from 'inversify';
 import {PRIVATE_TYPES, PUBLIC_TYPES} from '../identifiers';
 import {IBusinessRepo, GoodsListSdo, ProcessListSdo, IStore} from '../../repositories';
@@ -11,20 +11,20 @@ export class BusinessService extends BaseService implements IBusinessService {
     @inject(PRIVATE_TYPES.IBusinessRepo) private businessRepo!: IBusinessRepo;
     @inject(PUBLIC_TYPES.IStore) private store!: IStore;
     
-    getGoods = async (): Promise<GoodsListDto> => {
+    getItems = async (): Promise<ItemListDto> => {
         const userId: string = await this.getUserId();
-        const res: GoodsListSdo = await this.businessRepo.getGoodses(userId);
-        var goodses: Goods[] = [];
+        const res: GoodsListSdo = await this.businessRepo.getItems(userId);
+        let items: Item[] = [];
         if (res.isSuccess && res.goodses) {
-            goodses = this.mappingGoodses(res.goodses);
+            items = this.mappingItems(res.goodses);
         }
         
-        let goodsListDto: GoodsListDto = {
+        const itemListDto: ItemListDto = {
             ...this.populate(res),
-            goodses: goodses
+            items: items
         };
         
-        return goodsListDto;
+        return itemListDto;
     }
     
     getProcesses = async (): Promise<ProcessListDto> => {

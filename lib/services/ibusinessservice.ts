@@ -1,10 +1,10 @@
 ///<reference path="../infrastructure/services/businessservice.ts"/>
 
 
-import {GoodsListDto, ProcessListDto} from './dto'
+import {ItemListDto, ProcessListDto} from './dto'
 
 export interface IBusinessService {
-    getGoods(): Promise<GoodsListDto>;
+    getItems(): Promise<ItemListDto>;
     
     getProcesses(): Promise<ProcessListDto>
 }
