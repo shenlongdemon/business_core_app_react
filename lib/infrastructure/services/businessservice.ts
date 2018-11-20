@@ -1,4 +1,4 @@
-import {IBusinessService, Item, Process, ItemListDto, ProcessListDto, User} from '../../services'
+import {IBusinessService, Item, Process, ItemListDto, ProcessListDto, User, ItemHistory} from '../../services'
 import {inject, injectable} from 'inversify';
 import {PRIVATE_TYPES, PUBLIC_TYPES} from '../identifiers';
 import {IBusinessRepo, GoodsListSdo, ProcessListSdo, IStore} from '../../repositories';
@@ -41,6 +41,13 @@ export class BusinessService extends BaseService implements IBusinessService {
         };
         
         return processesListDto;
+    }
+    
+    getItemHistories = async (item: Item): Promise<ItemHistory[]> => {
+        const histories: ItemHistory[] = [];
+        
+        
+        return histories;
     }
     
     private getUserId = async (): Promise<string> => {

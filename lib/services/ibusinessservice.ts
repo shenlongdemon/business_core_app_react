@@ -2,8 +2,12 @@
 
 
 import {ItemListDto, ProcessListDto} from './dto'
+import {Item, ItemHistory} from './model'
 
 export interface IBusinessService {
+    
+    getItemHistories(item: Item): Promise<ItemHistory[]>;
+    
     getItems(): Promise<ItemListDto>;
     
     getProcesses(): Promise<ProcessListDto>
