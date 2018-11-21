@@ -30,12 +30,12 @@ export class BusinessService extends BaseService implements IBusinessService {
     getProcesses = async (): Promise<ProcessListDto> => {
         const userId: string = await this.getUserId();
         const res: ProcessListSdo = await this.businessRepo.getProcesses(userId);
-        var processes: Process[] = [];
+        let processes: Process[] = [];
         if (res.isSuccess && res.processes) {
             processes = this.mappingProcesses(res.processes);
         }
         
-        let processesListDto: ProcessListDto = {
+        const processesListDto: ProcessListDto = {
             ...this.populate(res),
             processes: processes
         };
@@ -52,7 +52,7 @@ export class BusinessService extends BaseService implements IBusinessService {
     
     private getUserId = async (): Promise<string> => {
         const user: User | null = await this.store.getUser();
-        var userId: string = CONSTANTS.STR_EMPTY;
+        let userId: string = CONSTANTS.STR_EMPTY;
         if (user) {
             userId = user.id;
         }

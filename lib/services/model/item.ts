@@ -4,6 +4,9 @@ import {Category} from './category';
 import {Section} from './section';
 import {UserInfo} from './userinfo';
 import {Material} from './material';
+import {BLEDevice} from './bledevice';
+import {Bluetooth} from './bluetooth';
+import {BLEPosition} from './bleposition';
 
 export interface Item extends IObject {
     name: string;
@@ -11,7 +14,6 @@ export interface Item extends IObject {
     description: string;
     category: Category;
     imageUrl: string;
-    
     code: string;
     sellCode: string;
     buyerCode: string;
