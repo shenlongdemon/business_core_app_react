@@ -10,5 +10,8 @@ const API = {
     GET_PROCESSES: (userId: string): string => {
         return `${ENV.HOST}/api/manifactory/getMaterialsByOwnerId?id=${userId}&pageSize=10000&pageNum=1`;
     },
+    GET_PROCESS: (id: string): string => {
+        return `${ENV.HOST}/api/manifactory/getMaterialById?id=${id}`;
+    },
 }
 export {API};

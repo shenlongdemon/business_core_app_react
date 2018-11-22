@@ -1,5 +1,5 @@
 import {BaseRepository} from './baserepository';
-import {IBusinessRepo, GoodsListSdo, LoginSdo, ProcessListSdo} from '../../repositories';
+import {IBusinessRepo, GoodsListSdo, LoginSdo, ProcessListSdo, ProcessDetailSdo} from '../../repositories';
 import {inject, injectable} from "inversify";
 import {IWebApi, ApiResult} from '../../webapi';
 import {PUBLIC_TYPES, PRIVATE_TYPES} from '../identifiers';
@@ -27,5 +27,14 @@ export class BusinessRepo extends BaseRepository implements IBusinessRepo {
             processes: res.Data ? res.Data : []
         };
         return processListSdo;
+    }
+    
+    getProcessDetail = async (id: string): Promise<ProcessDetailSdo> => {
+        const res: ApiResult = await this.api.get(API.GET_PROCESS(id));
+        let sdo: ProcessDetailSdo = {
+            ...this.transform(res),
+            process: res.Data
+        };
+        return sdo;
     }
 }
