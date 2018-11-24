@@ -17,7 +17,7 @@ export class AuthService extends BaseService implements IAuthService {
     
     login = async (username: string, password: string): Promise<BaseDto> => {
         const res: LoginSdo = await this.authRepo.login(username, password);
-        
+      
         if (res.isSuccess && res.user) {
             const user: User | null = this.mappingUser(res.user);
             if (user) {
@@ -29,7 +29,7 @@ export class AuthService extends BaseService implements IAuthService {
             ...this.populate(res)
         };
         
-        return loginDto
+        return loginDto;
     }
     
     isLoggedIn = async (): Promise<boolean> => {

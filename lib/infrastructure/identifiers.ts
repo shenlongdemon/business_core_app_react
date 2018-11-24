@@ -8,6 +8,7 @@ const PUBLIC_TYPES = {
 const PRIVATE_TYPES = {
     IAuthRepo : ('IAuthRepo'),
     IBusinessRepo : ('IBusinessRepo'),
+    IProcessRepo : ('IProcessRepo'),
 };
 
 export {PUBLIC_TYPES, PRIVATE_TYPES};

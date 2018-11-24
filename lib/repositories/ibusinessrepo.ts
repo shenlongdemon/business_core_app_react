@@ -1,12 +1,15 @@
 ///<reference path="../infrastructure/repositpries/businessrepo.ts"/>
 
 
-import {GoodsListSdo, ProcessListSdo, ProcessDetailSdo} from './sdo';
+import {GoodsListSdo, ObjectOfQRCodeSdo, ProcessListSdo, WeatherDataSdo} from './sdo';
 
 export interface IBusinessRepo {
-    getProcessDetail(id: string): Promise<ProcessDetailSdo>;
-    
-    getItems(userId: string): Promise<GoodsListSdo>;
-    
-    getProcesses(userId: string): Promise<ProcessListSdo>
+  
+  getObjectByQRCode(code: string): Promise<ObjectOfQRCodeSdo>;
+  
+  getWeather(latitude: number, longitude: number): Promise<WeatherDataSdo>;
+  
+  getItems(userId: string): Promise<GoodsListSdo>;
+  
+  getProcesses(userId: string): Promise<ProcessListSdo>
 }

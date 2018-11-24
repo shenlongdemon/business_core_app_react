@@ -3,3 +3,7 @@ export * from './basesdo';
 export * from './goodslistsdo';
 export * from './processlistsdo';
 export * from './processdetailsdo';
+export * from './materialdetailsdo';
+export * from './weatherdatasdo';
+export * from './creatematerialsdo';
+export * from './objectofqrcodesdo';
