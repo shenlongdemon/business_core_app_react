@@ -27,5 +27,5 @@ export interface Item extends IObject {
     view3d: string;
     material: Material | null;
     time: number;
-    maintains: [Activity[];
+    maintains: Activity[];
 }
