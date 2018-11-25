@@ -7,7 +7,8 @@ const STORAGE_KEYS = {
 
 const CONSTANTS = {
   STR_EMPTY: '',
-  
+  DATE_FORMAT: 'YYYY-MM-DD',
+  TIME_FORMAT: 'HH : MM'
 };
 
 const HTTPC_CODE = {

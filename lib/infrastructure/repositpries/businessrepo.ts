@@ -24,7 +24,7 @@ export class BusinessRepo extends BaseRepository implements IBusinessRepo {
     const res: ApiResult = await this.api.get(API.GET_PROCESSES(userId));
     const sdo: ProcessListSdo = {
       ...this.transform(res),
-      processes: res.Data ? res.Data : []
+      materials: res.Data ? res.Data : []
     };
     return sdo;
   }

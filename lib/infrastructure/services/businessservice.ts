@@ -16,7 +16,9 @@ import {PRIVATE_TYPES, PUBLIC_TYPES} from '../identifiers';
 import {IBusinessRepo, GoodsListSdo, ProcessListSdo, IStore, ObjectOfQRCodeSdo} from '../../repositories';
 import {BaseService} from './baseservice';
 import {CONSTANTS} from '../../common'
-
+import {ENV} from '../../config';
+import {LOGGER} from '../../logger';
+import moment from 'moment';
 @injectable()
 export class BusinessService extends BaseService implements IBusinessService {
   
@@ -64,6 +66,7 @@ export class BusinessService extends BaseService implements IBusinessService {
   }
   
   async getObjectByQRCode(code: string): Promise<ObjectOfQRCodeDto> {
+    debugger
     const res: ObjectOfQRCodeSdo = await this.businessRepo.getObjectByQRCode(code);
     let item: ScanQRItem | null = null;
     if (res.isSuccess && res.object) {
@@ -80,18 +83,24 @@ export class BusinessService extends BaseService implements IBusinessService {
   }
   
   toDateString(time: number): string {
-    const date: Date = new Date(time);
-    return date.toDateString();
+    const date: string = moment(time).format(CONSTANTS.DATE_FORMAT);
+    return date;
   }
   
   toTimeString(time: number): string {
-    const date: Date = new Date(time);
-    return date.toDateString();
+    const str: string = moment(time).format(CONSTANTS.TIME_FORMAT);
+    return str;
   }
   
   
   async saveCurrentPosition(position: Position): Promise<void> {
     await this.store.saveCurrentPosition(position);
+  }
+  
+  getLinkImage(relative: string): string {
+    const link: string = `${ENV.HOST}/uploads/${relative}`;
+    LOGGER.log(link);
+    return link;
   }
   
   
@@ -103,7 +112,8 @@ export class BusinessService extends BaseService implements IBusinessService {
     }
     return userId;
   }
-
+  
+ 
   
   
   

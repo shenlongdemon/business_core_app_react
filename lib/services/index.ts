@@ -5,4 +5,5 @@ export * from './iprocessservice';
 
 export * from './dto';
 export * from './model';
+export * from './common';
 
