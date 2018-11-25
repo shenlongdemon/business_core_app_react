@@ -21,7 +21,6 @@ import {
   CreateMaterialSdo
 } from "../../repositories";
 
-
 @injectable()
 export class ProcessService extends BaseService implements IProcessService {
   
@@ -55,7 +54,8 @@ export class ProcessService extends BaseService implements IProcessService {
     return userInfo;
   }
   
-  async createMaterial(name: string, description: string, imageName: string, image: any, bleDeviceId: string): Promise<CreateMaterialDto> {
+  async createMaterial(name: string, description: string, image: any, bleDeviceId: string): Promise<CreateMaterialDto> {
+    const imageName: string = uuid
     const userInfo: UserInfo = await this.getUserInfo();
     
     const user: User | null = await this.store.getUser()!;

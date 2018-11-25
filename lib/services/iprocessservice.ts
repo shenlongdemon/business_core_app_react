@@ -17,5 +17,5 @@ export interface IProcessService {
    * @param imageName 74d1fc0e-1cb2-429c-8c87-7663fd0e3e0e.jpg and replace '-' to ''
    * @param bleDeviceId bluetooth id or empty string
    */
-  createMaterial(name: string, description: string, imageName: string, image: any, bleDeviceId: string): Promise<CreateMaterialDto>
+  createMaterial(name: string, description: string, image: any, bleDeviceId: string): Promise<CreateMaterialDto>
 }
