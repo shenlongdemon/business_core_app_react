@@ -17,7 +17,7 @@ let builder: Container = new Container();
 builder.bind<ITestService>(PUBLIC_TYPES.ITestService).to(TestService);
 builder.bind<IAuthService>(PUBLIC_TYPES.IAuthService).to(AuthService);
 builder.bind<IBusinessService>(PUBLIC_TYPES.IBusinessService).to(BusinessService);
-builder.bind<IProcessService>(PUBLIC_TYPES.IPRocessService).to(ProcessService);
+builder.bind<IProcessService>(PUBLIC_TYPES.IProcessService).to(ProcessService);
 
 builder.bind<IAuthRepo>(PRIVATE_TYPES.IAuthRepo).to(AuthRepo);
 builder.bind<IBusinessRepo>(PRIVATE_TYPES.IBusinessRepo).to(BusinessRepo);

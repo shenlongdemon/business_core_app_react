@@ -1,10 +1,11 @@
+
 const PUBLIC_TYPES = {
   ITestService: ('ITestService'),
   IAuthService: ('IAuthService'),
   IWebApi: ('IWebApi'),
   IStore: ('IStore'),
   IBusinessService: ('IBusinessService'),
-  IPRocessService: ('IPRocessService'),
+  IProcessService: ('IProcessService'),
 };
 const PRIVATE_TYPES = {
   IAuthRepo: ('IAuthRepo'),

@@ -21,6 +21,9 @@ import {
   CreateMaterialSdo
 } from "../../repositories";
 
+// @ts-ignore
+const uuidv4 = require('uuid/v4')
+
 @injectable()
 export class ProcessService extends BaseService implements IProcessService {
   
@@ -43,25 +46,32 @@ export class ProcessService extends BaseService implements IProcessService {
     return dto;
   }
   
-  async getUserInfo(): Promise<UserInfo> {
+  getUserInfo = async (): Promise<UserInfo> => {
+    var a = 10;
     const userInfo: UserInfo = await this.store.getUserInfo();
+    a = 10;
     const position: Position = await this.store.getCurrentPosition();
+    a = 11;
     const weather: Weather = await this.getWeather(position.coord.latitude, position.coord.longitude);
-    
+    a = 12;
     userInfo.position = position;
     userInfo.weather = weather;
     
     return userInfo;
   }
   
-  async createMaterial(name: string, description: string, image: any, bleDeviceId: string): Promise<CreateMaterialDto> {
-    const imageName: string = uuid
+  createMaterial = async (name: string, description: string, image: any, bleDeviceId: string): Promise<CreateMaterialDto> => {
+    const imageName: string = this.genImageName();
+    
+    var a = 10;
+    
     const userInfo: UserInfo = await this.getUserInfo();
     
     const user: User | null = await this.store.getUser()!;
     const ownerId: string = user!.id;
     
-    const res: CreateMaterialSdo = await this.processRepo.createMaterial(ownerId, name, description, imageName, bleDeviceId, userInfo);
+    // const res: CreateMaterialSdo = await this.processRepo.createMaterial(ownerId, name, description, imageName, bleDeviceId, userInfo);
+    const res: CreateMaterialSdo = {isSuccess: true, message: ''};
     
     let material: Material | null = null;
     if (res.isSuccess && res.material) {
@@ -86,4 +96,8 @@ export class ProcessService extends BaseService implements IProcessService {
     return weather;
   }
   
+  private genImageName = (): string => {
+    const imageName: string = `${uuidv4().toString().replace(/-/g,'')}.jpg`;
+    return imageName;
+  }
 }
