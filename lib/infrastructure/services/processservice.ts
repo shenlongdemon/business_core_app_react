@@ -32,7 +32,7 @@ export class ProcessService extends BaseService implements IProcessService {
   @inject(PRIVATE_TYPES.IBusinessRepo) private ibusinessRepo!: IBusinessRepo;
   @inject(PUBLIC_TYPES.IStore) private store!: IStore;
   
-  async getMaterialDetail(id: string): Promise<MaterialDetailDto> {
+  getMaterialDetail = async (id: string): Promise<MaterialDetailDto> => {
     const res: MaterialDetailSdo = await this.processRepo.getMaterialDetail(id);
     let material: Material | null = null;
     if (res.isSuccess && res.material) {
@@ -66,16 +66,14 @@ export class ProcessService extends BaseService implements IProcessService {
   }
   
   createMaterial = async (name: string, description: string, image: any, bleDeviceId: string): Promise<CreateMaterialDto> => {
+    debugger;
     const imageName: string = this.genImageName();
     
     var a = 10;
     
     const userInfo: UserInfo = await this.getUserInfo();
     
-    const user: User | null = await this.store.getUser()!;
-    const ownerId: string = user!.id;
-    
-    // const res: CreateMaterialSdo = await this.processRepo.createMaterial(ownerId, name, description, imageName, bleDeviceId, userInfo);
+    // const res: CreateMaterialSdo = await this.processRepo.createMaterial(userInfo.id, name, description, imageName, bleDeviceId, userInfo);
     const res: CreateMaterialSdo = {isSuccess: true, message: ''};
     
     let material: Material | null = null;
@@ -94,7 +92,7 @@ export class ProcessService extends BaseService implements IProcessService {
     return dto;
   }
   
-  private async getWeather(latitude: number, longitude: number): Promise<Weather> {
+  private getWeather = async (latitude: number, longitude: number): Promise<Weather> => {
     const res: WeatherDataSdo = await this.ibusinessRepo.getWeather(latitude, longitude);
     const weather: Weather = this.mappingWeather(res.weather);
     
