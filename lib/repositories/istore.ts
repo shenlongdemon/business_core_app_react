@@ -12,12 +12,12 @@ export interface IStore {
   /**
    * get current position what is saved when user moves and system will keep tract user's position
    */
-  getCurrentPosition(): Promise<Position>
+  getCurrentPosition(): Promise<Position | null>
   
   /**
-   * get userinfo to generate code for item
+   * save current position what is saved when user moves and system will keep tract user's position
    */
-  getUserInfo(): Promise<UserInfo>;
+  saveCurrentPosition(position: Position): Promise<void>
   
   /**
    * get user who logged in

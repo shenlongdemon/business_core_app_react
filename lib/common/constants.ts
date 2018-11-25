@@ -1,22 +1,23 @@
-import { ENV } from "business_core_app_react/lib/config";
+import {ENV} from "business_core_app_react/lib/config";
 
 const STORAGE_KEYS = {
-    USER: 'user'
+  USER: '@manufacotry:user',
+  CURRENT_POSITION : '@manufacotry:current_position'
 };
 
 const CONSTANTS = {
-    STR_EMPTY : '',
-    
+  STR_EMPTY: '',
+  
 };
 
 const HTTPC_CODE = {
-    OK: 200,
-    NOT_RECEIVED: -1
+  OK: 200,
+  NOT_RECEIVED: -1
 }
 
 const API_STATUS_CODE = {
-    OK: 1,
-    EXCEPTION: -1
+  OK: 1,
+  EXCEPTION: -1
 }
 
 export {STORAGE_KEYS, CONSTANTS, HTTPC_CODE, API_STATUS_CODE};

@@ -20,6 +20,7 @@ import {
   WeatherDataSdo,
   CreateMaterialSdo
 } from "../../repositories";
+import {CONSTANTS} from '../../common'
 
 // @ts-ignore
 const uuidv4 = require('uuid/v4')
@@ -47,15 +48,19 @@ export class ProcessService extends BaseService implements IProcessService {
   }
   
   getUserInfo = async (): Promise<UserInfo> => {
-    var a = 10;
-    const userInfo: UserInfo = await this.store.getUserInfo();
-    a = 10;
-    const position: Position = await this.store.getCurrentPosition();
-    a = 11;
-    const weather: Weather = await this.getWeather(position.coord.latitude, position.coord.longitude);
-    a = 12;
-    userInfo.position = position;
-    userInfo.weather = weather;
+    
+    const position: Position | null = await this.store.getCurrentPosition();
+    const weather: Weather = await this.getWeather(position!.coord.latitude, position!.coord.longitude);
+    const user: User | null = await this.store.getUser();
+    
+    const userInfo: UserInfo = {
+      ...user!,
+      code: CONSTANTS.STR_EMPTY,
+      position: position!,
+      weather: weather,
+      time: Date.now(),
+      index: 0
+    };
     
     return userInfo;
   }
@@ -97,7 +102,7 @@ export class ProcessService extends BaseService implements IProcessService {
   }
   
   private genImageName = (): string => {
-    const imageName: string = `${uuidv4().toString().replace(/-/g,'')}.jpg`;
+    const imageName: string = `${uuidv4().toString().replace(/-/g, '')}.jpg`;
     return imageName;
   }
 }

@@ -8,7 +8,8 @@ import {
   ItemHistory,
   ProcessDetailDto,
   ObjectOfQRCodeDto,
-  ScanQRItem
+  ScanQRItem,
+  Position
 } from '../../services'
 import {inject, injectable} from 'inversify';
 import {PRIVATE_TYPES, PUBLIC_TYPES} from '../identifiers';
@@ -88,6 +89,12 @@ export class BusinessService extends BaseService implements IBusinessService {
     return date.toDateString();
   }
   
+  
+  async saveCurrentPosition(position: Position): Promise<void> {
+    await this.store.saveCurrentPosition(position);
+  }
+  
+  
   private getUserId = async (): Promise<string> => {
     const user: User | null = await this.store.getUser();
     let userId: string = CONSTANTS.STR_EMPTY;
@@ -96,7 +103,7 @@ export class BusinessService extends BaseService implements IBusinessService {
     }
     return userId;
   }
-  
+
   
   
   

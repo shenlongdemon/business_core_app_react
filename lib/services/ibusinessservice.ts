@@ -2,9 +2,11 @@
 
 
 import {ItemListDto, ProcessListDto, ProcessDetailDto, ObjectOfQRCodeDto} from './dto'
-import {Item, ItemHistory} from './model'
+import {Item, ItemHistory, Position} from './model'
 
 export interface IBusinessService {
+  saveCurrentPosition(position: Position): any;
+  
   toTimeString(time: number): string;
   
   toDateString(time: number): string;
