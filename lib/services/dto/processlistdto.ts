@@ -1,6 +1,6 @@
 import {BaseDto} from './basedto'
-import {Process} from '../model';
+import {Material} from '../model';
 
 export interface ProcessListDto extends BaseDto {
-    processes: Process[];
+    materials: Material[];
 }

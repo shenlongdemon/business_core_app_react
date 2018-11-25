@@ -5,12 +5,15 @@ import {ItemListDto, ProcessListDto, ProcessDetailDto, ObjectOfQRCodeDto} from '
 import {Item, ItemHistory} from './model'
 
 export interface IBusinessService {
-    
-    getItemHistories(item: Item): Promise<ItemHistory[]>;
-    
-    getItems(): Promise<ItemListDto>;
-    
-    getProcesses(): Promise<ProcessListDto>
+  toTimeString(time: number): string;
   
-    getObjectByQRCode(code: string): Promise<ObjectOfQRCodeDto>;
+  toDateString(time: number): string;
+  
+  getItemHistories(item: Item): Promise<ItemHistory[]>;
+  
+  getItems(): Promise<ItemListDto>;
+  
+  getProcesses(): Promise<ProcessListDto>
+  
+  getObjectByQRCode(code: string): Promise<ObjectOfQRCodeDto>;
 }

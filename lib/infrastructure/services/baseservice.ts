@@ -67,6 +67,22 @@ export class BaseService {
     return processes;
   }
   
+  protected mappingList<T>(data: any): T[] {
+    const ts: T[] = [];
+    const tList: (T | null)[] = data.map((g: any) => {
+      const t: T | null = this.mappingByJSON(g);
+      return t;
+    });
+  
+    tList.map((t: T | null) => {
+      if (t) {
+        ts.push(t);
+      }
+    });
+  
+    return ts;
+  }
+  
   protected mappingMaterial(data: any): Material | null {
     const material: Material | null = this.mappingByJSON(data);
     return material;

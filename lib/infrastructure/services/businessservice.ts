@@ -1,7 +1,7 @@
 import {
   IBusinessService,
   Item,
-  Process,
+  Material,
   ItemListDto,
   ProcessListDto,
   User,
@@ -42,14 +42,14 @@ export class BusinessService extends BaseService implements IBusinessService {
   async getProcesses(): Promise<ProcessListDto> {
     const userId: string = await this.getUserId();
     const res: ProcessListSdo = await this.businessRepo.getProcesses(userId);
-    let processes: Process[] = [];
-    if (res.isSuccess && res.processes) {
-      processes = this.mappingProcesses(res.processes);
+    let materials: Material[] = [];
+    if (res.isSuccess && res.materials) {
+      materials = this.mappingList<Material>(res.materials);
     }
     
     const dto: ProcessListDto = {
       ...this.populate(res),
-      processes: processes
+      materials: materials
     };
     
     return dto;
@@ -78,6 +78,16 @@ export class BusinessService extends BaseService implements IBusinessService {
     
   }
   
+  toDateString(time: number): string {
+    const date: Date = new Date(time);
+    return date.toDateString();
+  }
+  
+  toTimeString(time: number): string {
+    const date: Date = new Date(time);
+    return date.toDateString();
+  }
+  
   private getUserId = async (): Promise<string> => {
     const user: User | null = await this.store.getUser();
     let userId: string = CONSTANTS.STR_EMPTY;
@@ -86,6 +96,8 @@ export class BusinessService extends BaseService implements IBusinessService {
     }
     return userId;
   }
+  
+  
   
   
 }
