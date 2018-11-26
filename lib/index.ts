@@ -5,3 +5,4 @@ export {ENV} from './config';
 export * from './common';
 export {IWebApi} from './webapi';
 export * from './models';
+export * from './logger';

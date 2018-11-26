@@ -9,3 +9,4 @@ export {UserInfo} from './userinfo';
 export {Position} from './position';
 export {Weather} from './weather';
 export {ScanQRItem} from './scanqritem';
+export {BLEDevice} from './bledevice'

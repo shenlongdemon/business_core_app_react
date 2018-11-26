@@ -113,6 +113,16 @@ export class BusinessService extends BaseService implements IBusinessService {
     return userId;
   }
   
+  getCurrentPosition = async (): Promise<Position> => {
+    const position: Position = await this.store.getCurrentPosition();
+    return position;
+  }
+  
+  getUser = async (): Promise<User> => {
+    const user: User | null = await this.store.getUser();
+    return user!;
+  }
+  
  
   
   

@@ -12,7 +12,7 @@ export interface IStore {
   /**
    * get current position what is saved when user moves and system will keep tract user's position
    */
-  getCurrentPosition(): Promise<Position | null>
+  getCurrentPosition(): Promise<Position>
   
   /**
    * save current position what is saved when user moves and system will keep tract user's position
