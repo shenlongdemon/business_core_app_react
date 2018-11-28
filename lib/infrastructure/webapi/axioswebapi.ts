@@ -2,131 +2,130 @@
     Using typed-rest-client at https://github.com/Microsoft/typed-rest-client
 */
 
-import {IWebApi, ApiResult} from "../..//webapi";
-import {injectable} from "inversify";
-import {ErrorResult} from "../../models";
-import {HTTPC_CODE, API_STATUS_CODE, CONSTANTS} from "../../common/constants";
-import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios';
+import { IWebApi, ApiResult } from "../..//webapi";
+import { injectable } from "inversify";
+import { ErrorResult } from "../../models";
+import { HTTPC_CODE, API_STATUS_CODE, CONSTANTS } from "../../common/constants";
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 
 @injectable()
 export class AxiosWebApi implements IWebApi {
-  
-  private static readonly USER_AGENT: string = 'phoenix-api';
-  
+  private static readonly USER_AGENT: string = "phoenix-api";
+
   private handleBusiness?: (error: ErrorResult) => void;
   private handleException?: (error: ErrorResult) => void;
   private genHeader?: () => Promise<any>;
-  
-  constructor() {
-  
-  }
-  
+
+  constructor() {}
+
   setGenHeader(genHeader: () => Promise<any>): void {
     this.genHeader = genHeader;
   }
-  
+
   handleExceptionError = (handle: (error: ErrorResult) => void): void => {
     this.handleException = handle;
-  }
-  
+  };
+
   handleBusinessError = (handle: (error: ErrorResult) => void): void => {
     this.handleBusiness = handle;
-  }
-  
+  };
+
   async get(url: string): Promise<ApiResult> {
-    
     let apiResult: ApiResult;
     try {
-      
       const instance: AxiosInstance = await this.getInstance();
-      const response: AxiosResponse<ApiResult> = await instance.get<ApiResult>(url);
-      
+      const response: AxiosResponse<ApiResult> = await instance.get<ApiResult>(
+        url
+      );
+
       apiResult = this.handle(response);
-    }
-    catch (e) {
+    } catch (e) {
       apiResult = this.catchException(e);
     }
-    
+
     return apiResult;
   }
-  
+
   async request(url: string): Promise<ApiResult> {
     let apiResult: ApiResult;
     try {
-    
       const instance: AxiosInstance = await this.getInstance();
       const response: AxiosResponse<any> = await instance.get<ApiResult>(url);
-  
+
       apiResult = {
         Data: response.data,
         Message: response.statusText,
         Status: API_STATUS_CODE.OK
-    
       };
-    }
-    catch (e) {
+    } catch (e) {
       apiResult = this.catchException(e);
     }
-  
-    return apiResult;  }
-  
-  
+
+    return apiResult;
+  }
+
   async post(url: string, data: any): Promise<ApiResult> {
     let apiResult: ApiResult;
     try {
-      
       const instance: AxiosInstance = await this.getInstance();
-      const response: AxiosResponse<ApiResult> = await instance.post<ApiResult>(url, data);
-      
+      const response: AxiosResponse<ApiResult> = await instance.post<ApiResult>(
+        url,
+        data
+      );
+
       apiResult = this.handle(response);
-    }
-    catch (e) {
+    } catch (e) {
       apiResult = this.catchException(e);
     }
-    
+
     return apiResult;
   }
-  
+
   async put(url: string, data: any): Promise<ApiResult> {
     return {
       Data: null,
-      Message: '',
+      Message: "",
       Status: 0
     };
   }
-  
+
   async delete(url: string): Promise<ApiResult> {
     return {
       Data: null,
-      Message: '',
+      Message: "",
       Status: 0
     };
   }
-  
-  async uploadFiles(url: string, files: any[], fileNames: string[]): Promise<any> {
+
+  async uploadFiles(
+    url: string,
+    files: any[],
+    fileNames: string[]
+  ): Promise<any> {
     let apiResult: ApiResult;
     try {
-      const requests: Promise<AxiosResponse<any>>[] = files.map(async (image: any, index: number) => {
-        const instance: AxiosInstance = await this.getInstanceMultiPart();
-        const formData: FormData = new FormData();
-        formData.append('imgUploader', image, fileNames[index]);
-        return instance.post(url, formData);
-      });
-      
+      const requests: Promise<AxiosResponse<any>>[] = files.map(
+        async (image: any, index: number) => {
+          const instance: AxiosInstance = await this.getInstanceMultiPart();
+          const formData: FormData = new FormData();
+          formData.append("imgUploader", image, fileNames[index]);
+          return instance.post(url, formData);
+        }
+      );
+
       const responses: AxiosResponse<any>[] = await axios.all(requests);
       apiResult = {
         Data: responses,
         Message: CONSTANTS.STR_EMPTY,
         Status: API_STATUS_CODE.OK
       };
-    }
-    catch (e) {
+    } catch (e) {
       apiResult = this.catchException(e);
     }
-    
+
     return apiResult;
   }
-  
+
   private transform = (error: any): ErrorResult => {
     let errorResilt: ErrorResult;
     if (error.response) {
@@ -142,7 +141,6 @@ export class AxiosWebApi implements IWebApi {
         message: error.response.statusText,
         __debug: error
       };
-      
     } else if (error.request) {
       // The request was made but no response was received
       // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
@@ -165,8 +163,8 @@ export class AxiosWebApi implements IWebApi {
       };
     }
     return errorResilt;
-  }
-  
+  };
+
   private catchException = (e: any): ApiResult => {
     if (this.handleException) {
       let errorResilt: ErrorResult = this.transform(e);
@@ -177,13 +175,13 @@ export class AxiosWebApi implements IWebApi {
       Message: CONSTANTS.STR_EMPTY,
       Status: API_STATUS_CODE.EXCEPTION
     };
-    
+
     return apiResult;
-  }
-  
+  };
+
   private handle = (response: AxiosResponse<ApiResult>): ApiResult => {
     var apiResult: ApiResult;
-    
+
     if (response.status !== HTTPC_CODE.OK && this.handleException) {
       this.handleException({
         businessCode: API_STATUS_CODE.EXCEPTION,
@@ -197,8 +195,7 @@ export class AxiosWebApi implements IWebApi {
         Message: response.statusText,
         Status: API_STATUS_CODE.EXCEPTION
       };
-    }
-    else {
+    } else {
       apiResult = response.data;
       if (apiResult.Status !== API_STATUS_CODE.OK && this.handleBusiness) {
         this.handleBusiness({
@@ -211,10 +208,9 @@ export class AxiosWebApi implements IWebApi {
       }
     }
     return apiResult;
-  }
-  
+  };
+
   private getInstance = async (): Promise<AxiosInstance> => {
-    
     let headers: any = {};
     if (this.genHeader) {
       headers = await this.genHeader();
@@ -224,22 +220,21 @@ export class AxiosWebApi implements IWebApi {
       timeout: 30000
     };
     const instance: AxiosInstance = axios.create(config);
-    
+
     return instance;
-  }
-  
+  };
+
   private async getInstanceMultiPart(): Promise<AxiosInstance> {
-    
     let headers: any = {};
     if (this.genHeader) {
       headers = await this.genHeader();
     }
     const config: AxiosRequestConfig = {
-      headers: {...headers, 'Content-Type': `multipart/form-data`},
+      headers: { ...headers, "Content-Type": `multipart/form-data` },
       timeout: 30000
     };
     const instance: AxiosInstance = axios.create(config);
-    
+
     return instance;
   }
 }

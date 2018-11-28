@@ -1,5 +1,5 @@
-import {BaseSdo} from './basesdo'
+import { BaseSdo } from "./basesdo";
 
-export interface LoginSdo extends BaseSdo{
-    user?: any|null;
+export interface LoginSdo extends BaseSdo {
+  user?: any | null;
 }

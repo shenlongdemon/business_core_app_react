@@ -10,4 +10,4 @@ enum ScanQRItemType {
   product = 2
 }
 
-export {TaskStatus, ScanQRItemType};
+export { TaskStatus, ScanQRItemType };

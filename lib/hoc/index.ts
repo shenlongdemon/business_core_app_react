@@ -1,1 +1,1 @@
-export * from './with_moreinfo';
+export * from "./with_moreinfo";

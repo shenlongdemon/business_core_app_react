@@ -1,3 +1,3 @@
 export interface ITestService {
-    get(): string;
+  get(): string;
 }

@@ -1,7 +1,6 @@
-import {IObject} from './iobject'
+import { IObject } from "./iobject";
 
 /**
  * Material
  */
-export interface Process extends IObject{
-}
+export interface Process extends IObject {}

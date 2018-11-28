@@ -1,10 +1,18 @@
+import {IObject} from "./iobject";
 
-
-interface IProperty {
-  name: string;
-  value: any
+export enum DynPropertyType {
+  TEXT = 'TEXT',
+  CHECKBOX = 'CHECKBOX',
+  RADIO = 'RADIO',
+  IMAGE = 'IMAGE',
+  FILE = 'FILE',
+  COMBOBOX = 'COMBOBOX'
+  
 }
 
-export interface DynProperty {
-  properties: IProperty[];
+export interface DynProperty extends IObject {
+  type: DynPropertyType;
+  title: string;
+  value: string,
+  items: string;
 }

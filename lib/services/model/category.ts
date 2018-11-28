@@ -1,6 +1,6 @@
-import {IObject} from './iobject';
+import { IObject } from "./iobject";
 
-export interface Category extends IObject{
-    value: string;
-    icon: string | null;
+export interface Category extends IObject {
+  value: string;
+  icon: string | null;
 }

@@ -1,2 +1,2 @@
-export * from './factoryinjection';
-export * from './identifiers';
+export * from "./factoryinjection";
+export * from "./identifiers";

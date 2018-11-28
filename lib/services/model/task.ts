@@ -1,12 +1,12 @@
-import {IObject} from './iobject';
-import {Worker} from './worker';
+import { IObject } from "./iobject";
+import { Worker } from "./worker";
+import { DynProperty } from "./dynproperty";
 
 export interface Task extends IObject {
-    name: string;
-    description: string;
-    imageUrl: string;
-    code: string;
-    workers: Worker[];
-    materialId: string;
-    materialOwnerId: string;
+  code: string;
+  name: string;
+  workers: Worker[];
+  materialId: string;
+  materialOwnerId: string;
+  properties: DynProperty[];
 }

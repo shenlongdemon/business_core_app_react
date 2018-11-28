@@ -1,4 +1,4 @@
-import {ScanQRItemType} from '../common';
+import { ScanQRItemType } from "../common";
 
 export interface ScanQRItem {
   type?: ScanQRItemType;

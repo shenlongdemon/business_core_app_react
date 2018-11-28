@@ -1,5 +1,5 @@
-import {BaseSdo} from './basesdo';
+import { BaseSdo } from "./basesdo";
 
-export interface ProcessListSdo extends BaseSdo{
-    materials: any[]|null;
+export interface ProcessListSdo extends BaseSdo {
+  materials: any[] | null;
 }

@@ -1,2 +1,2 @@
-export * from './apiresult';
-export * from './iwebapi';
+export * from "./apiresult";
+export * from "./iwebapi";

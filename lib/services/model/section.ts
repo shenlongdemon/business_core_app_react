@@ -1,7 +1,7 @@
-import {IObject} from './iobject';
-import {UserInfo} from './userinfo';
+import { IObject } from "./iobject";
+import { UserInfo } from "./userinfo";
 
-export interface Section extends IObject{
-    code: string;
-    history: UserInfo[];
+export interface Section extends IObject {
+  code: string;
+  history: UserInfo[];
 }

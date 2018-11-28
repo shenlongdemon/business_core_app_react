@@ -1,5 +1,5 @@
-import {BaseSdo} from './basesdo';
+import { BaseSdo } from "./basesdo";
 
-export interface GoodsListSdo extends BaseSdo{
-    goodses: any[]|null;
+export interface GoodsListSdo extends BaseSdo {
+  goodses: any[] | null;
 }

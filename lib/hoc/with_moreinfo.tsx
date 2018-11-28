@@ -1,33 +1,42 @@
-import * as React from 'react'
+import * as React from "react";
 interface OriginProps {
-    firstName: string;
+  firstName: string;
 }
 interface OriginState {
-    age: number;
+  age: number;
 }
 
 interface ExtendProps extends OriginProps {
-    lastName: string;
+  lastName: string;
 }
 
 interface ExtendState extends OriginState {
-    address: string;
+  address: string;
 }
 
-export default function ( WrappedComponent: React.ComponentType<OriginProps>): React.ComponentClass<ExtendProps, ExtendState> {
-    return class extends React.Component<ExtendProps, ExtendState> {
+export default function(
+  WrappedComponent: React.ComponentType<OriginProps>
+): React.ComponentClass<ExtendProps, ExtendState> {
+  return class extends React.Component<ExtendProps, ExtendState> {
+    constructor(props: ExtendProps) {
+      super(props);
+      this.state = { address: "Viet Name", age: 10 };
+    }
 
-        constructor(props: ExtendProps) {
-            super(props);
-            this.state = { address: 'Viet Name', age: 10 };
-        }
+    componentDidMount() {
+      alert(
+        this.props.lastName +
+          " " +
+          this.props.firstName +
+          " " +
+          this.state.age +
+          " " +
+          this.state.address
+      );
+    }
 
-        componentDidMount() {
-            alert(this.props.lastName + ' ' + this.props.firstName + ' ' + this.state.age + ' ' + this.state.address);
-        }
-        
-        render() {
-            return <WrappedComponent {...this.props} />;
-        }
-    };
-}  
+    render() {
+      return <WrappedComponent {...this.props} />;
+    }
+  };
+}

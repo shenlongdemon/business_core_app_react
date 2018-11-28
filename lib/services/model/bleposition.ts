@@ -1,5 +1,5 @@
-import {BLECoord} from './blecoord';
+import { BLECoord } from "./blecoord";
 
 export interface BLEPosition {
-    coord: BLECoord;
+  coord: BLECoord;
 }

@@ -1,6 +1,6 @@
-import {IObject} from './iobject';
+import { IObject } from "./iobject";
 
-export interface Bluetooth extends IObject{
-    name: string;
-    localName: string;
+export interface Bluetooth extends IObject {
+  name: string;
+  localName: string;
 }

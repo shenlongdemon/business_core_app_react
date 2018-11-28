@@ -7,25 +7,24 @@
  */
 ///<reference path="../../../../src/infrastructure/asyncstoragestore.ts"/>
 
-import {User, UserInfo, Position} from '../services';
+import { User, UserInfo, Position } from "../services";
 
 export interface IStore {
-  
   /**
    * get current position what is saved when user moves and system will keep tract user's position
    */
-  getCurrentPosition(): Promise<Position>
-  
+  getCurrentPosition(): Promise<Position>;
+
   /**
    * save current position what is saved when user moves and system will keep tract user's position
    */
-  saveCurrentPosition(position: Position): Promise<void>
-  
+  saveCurrentPosition(position: Position): Promise<void>;
+
   /**
    * get user who logged in
    */
   getUser(): Promise<User | null>;
-  
+
   /**
    * save user to store and use it as product owner
    * @param user

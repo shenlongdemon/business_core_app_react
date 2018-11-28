@@ -1,12 +1,11 @@
-import {ITestService} from '../../services/itestservice';
-import { injectable } from 'inversify';
+import { ITestService } from "../../services/itestservice";
+import { injectable } from "inversify";
 
 @injectable()
 export class TestService implements ITestService {
+  constructor() {}
 
-    constructor() {}
-    
-    get = (): string => {
-        return 'Implemented';
-    }
+  get = (): string => {
+    return "Implemented";
+  };
 }

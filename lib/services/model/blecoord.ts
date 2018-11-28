@@ -1,5 +1,5 @@
-import {Coord} from './coord';
+import { Coord } from "./coord";
 
-export interface BLECoord extends Coord{
-    distance: number;
+export interface BLECoord extends Coord {
+  distance: number;
 }
