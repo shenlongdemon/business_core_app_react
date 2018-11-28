@@ -5,6 +5,8 @@
  
  Scope: singleton
  */
+///<reference path="../../../../src/infrastructure/asyncstoragestore.ts"/>
+
 import {User, UserInfo, Position} from '../services';
 
 export interface IStore {
