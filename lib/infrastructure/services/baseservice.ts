@@ -105,35 +105,35 @@ export class BaseService {
           id: `TEXT ${i}`,
           title: 'Name',
           type: DynPropertyType.TEXT,
-          value: '',
+          value: 'default text',
           items: ''
         });
         properties.push({
           id: `CHECKBOX ${i}`,
           title: 'Colors',
           type: DynPropertyType.CHECKBOX,
-          value: '',
-          items: 'White, Red'
+          value: 'Red',
+          items: 'White,Red'
         });
         properties.push({
           id: `COMBOBOX ${i}`,
           title: 'Colors',
           type: DynPropertyType.COMBOBOX,
-          value: '',
-          items: 'White, Red'
+          value: 'Red',
+          items: 'White,Red'
         });
         properties.push({
           id: `RADIO ${i}`,
           title: 'Gender',
           type: DynPropertyType.RADIO,
-          value: '',
-          items: 'Male, Female'
+          value: 'Female',
+          items: 'Male,Female'
         });
         properties.push({
           id: `IMAGE ${i}`,
           title: 'Upload images',
           type: DynPropertyType.IMAGE,
-          value: '',
+          value: '34160c7c2e054140bd04849b75404dd7.jpg',
           items: ''
         });
         properties.push({
