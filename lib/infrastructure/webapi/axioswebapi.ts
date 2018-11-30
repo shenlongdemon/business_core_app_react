@@ -2,34 +2,35 @@
     Using typed-rest-client at https://github.com/Microsoft/typed-rest-client
 */
 
-import { IWebApi, ApiResult } from "../..//webapi";
-import { injectable } from "inversify";
-import { ErrorResult } from "../../models";
-import { HTTPC_CODE, API_STATUS_CODE, CONSTANTS } from "../../common/constants";
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
+import {IWebApi, ApiResult} from "../..//webapi";
+import {injectable} from "inversify";
+import {ErrorResult} from "../../models";
+import {HTTPC_CODE, API_STATUS_CODE, CONSTANTS} from "../../common/constants";
+import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse} from "axios";
 
 @injectable()
 export class AxiosWebApi implements IWebApi {
   private static readonly USER_AGENT: string = "phoenix-api";
-
+  
   private handleBusiness?: (error: ErrorResult) => void;
   private handleException?: (error: ErrorResult) => void;
   private genHeader?: () => Promise<any>;
-
-  constructor() {}
-
+  
+  constructor() {
+  }
+  
   setGenHeader(genHeader: () => Promise<any>): void {
     this.genHeader = genHeader;
   }
-
+  
   handleExceptionError = (handle: (error: ErrorResult) => void): void => {
     this.handleException = handle;
   };
-
+  
   handleBusinessError = (handle: (error: ErrorResult) => void): void => {
     this.handleBusiness = handle;
   };
-
+  
   async get(url: string): Promise<ApiResult> {
     let apiResult: ApiResult;
     try {
@@ -37,21 +38,21 @@ export class AxiosWebApi implements IWebApi {
       const response: AxiosResponse<ApiResult> = await instance.get<ApiResult>(
         url
       );
-
+      
       apiResult = this.handle(response);
     } catch (e) {
       apiResult = this.catchException(e);
     }
-
+    
     return apiResult;
   }
-
+  
   async request(url: string): Promise<ApiResult> {
     let apiResult: ApiResult;
     try {
       const instance: AxiosInstance = await this.getInstance();
       const response: AxiosResponse<any> = await instance.get<ApiResult>(url);
-
+      
       apiResult = {
         Data: response.data,
         Message: response.statusText,
@@ -60,10 +61,10 @@ export class AxiosWebApi implements IWebApi {
     } catch (e) {
       apiResult = this.catchException(e);
     }
-
+    
     return apiResult;
   }
-
+  
   async post(url: string, data: any): Promise<ApiResult> {
     let apiResult: ApiResult;
     try {
@@ -72,15 +73,15 @@ export class AxiosWebApi implements IWebApi {
         url,
         data
       );
-
+      
       apiResult = this.handle(response);
     } catch (e) {
       apiResult = this.catchException(e);
     }
-
+    
     return apiResult;
   }
-
+  
   async put(url: string, data: any): Promise<ApiResult> {
     return {
       Data: null,
@@ -88,7 +89,7 @@ export class AxiosWebApi implements IWebApi {
       Status: 0
     };
   }
-
+  
   async delete(url: string): Promise<ApiResult> {
     return {
       Data: null,
@@ -96,23 +97,31 @@ export class AxiosWebApi implements IWebApi {
       Status: 0
     };
   }
-
-  async uploadFiles(
-    url: string,
-    files: any[],
-    fileNames: string[]
-  ): Promise<any> {
+  
+  uploadFile = async (url: string, fileData: any, fileName: string, fileType: string): Promise<any> => {
+    
+    const body: FormData = new FormData();
+    body.append('file', fileData);
+    body.append('name', 'imgUploader');
+    
+    const xhr: XMLHttpRequest = new XMLHttpRequest();
+    xhr.open('POST', url);
+    xhr.send(body);
+  }
+  
+  async uploadFiles(url: string, files: any[], fileNames: string[], fileTypes: string[]): Promise<any> {
     let apiResult: ApiResult;
     try {
       const requests: Promise<AxiosResponse<any>>[] = files.map(
-        async (image: any, index: number) => {
+        async (file: any, index: number) => {
           const instance: AxiosInstance = await this.getInstanceMultiPart();
           const formData: FormData = new FormData();
-          formData.append("imgUploader", image, fileNames[index]);
+          formData.append("imgUploader", file, fileNames[index]);
+          formData.append('type', fileTypes[index])
           return instance.post(url, formData);
         }
       );
-
+      
       const responses: AxiosResponse<any>[] = await axios.all(requests);
       apiResult = {
         Data: responses,
@@ -122,10 +131,10 @@ export class AxiosWebApi implements IWebApi {
     } catch (e) {
       apiResult = this.catchException(e);
     }
-
+    
     return apiResult;
   }
-
+  
   private transform = (error: any): ErrorResult => {
     let errorResilt: ErrorResult;
     if (error.response) {
@@ -164,7 +173,7 @@ export class AxiosWebApi implements IWebApi {
     }
     return errorResilt;
   };
-
+  
   private catchException = (e: any): ApiResult => {
     if (this.handleException) {
       let errorResilt: ErrorResult = this.transform(e);
@@ -175,13 +184,13 @@ export class AxiosWebApi implements IWebApi {
       Message: CONSTANTS.STR_EMPTY,
       Status: API_STATUS_CODE.EXCEPTION
     };
-
+    
     return apiResult;
   };
-
+  
   private handle = (response: AxiosResponse<ApiResult>): ApiResult => {
     var apiResult: ApiResult;
-
+    
     if (response.status !== HTTPC_CODE.OK && this.handleException) {
       this.handleException({
         businessCode: API_STATUS_CODE.EXCEPTION,
@@ -209,7 +218,7 @@ export class AxiosWebApi implements IWebApi {
     }
     return apiResult;
   };
-
+  
   private getInstance = async (): Promise<AxiosInstance> => {
     let headers: any = {};
     if (this.genHeader) {
@@ -220,21 +229,19 @@ export class AxiosWebApi implements IWebApi {
       timeout: 30000
     };
     const instance: AxiosInstance = axios.create(config);
-
+    
     return instance;
   };
-
+  
   private async getInstanceMultiPart(): Promise<AxiosInstance> {
-    let headers: any = {};
-    if (this.genHeader) {
-      headers = await this.genHeader();
-    }
+    
     const config: AxiosRequestConfig = {
-      headers: { ...headers, "Content-Type": `multipart/form-data` },
-      timeout: 30000
+      timeout: 330000
     };
     const instance: AxiosInstance = axios.create(config);
-
+    
     return instance;
   }
+  
+ 
 }

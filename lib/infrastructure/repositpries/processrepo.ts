@@ -1,4 +1,4 @@
-import { BaseRepository } from "./baserepository";
+import {BaseRepository} from "./baserepository";
 import {
   IProcessRepo,
   GoodsListSdo,
@@ -9,15 +9,15 @@ import {
   CreateMaterialSdo,
   CreateMaterialRequest
 } from "../../repositories";
-import { inject, injectable } from "inversify";
-import { IWebApi, ApiResult } from "../../webapi";
-import { PUBLIC_TYPES, PRIVATE_TYPES } from "../identifiers";
-import { STORAGE_KEYS, CONSTANTS, API, API_STATUS_CODE } from "../../common";
+import {inject, injectable} from "inversify";
+import {IWebApi, ApiResult} from "../../webapi";
+import {PUBLIC_TYPES, PRIVATE_TYPES} from "../identifiers";
+import {STORAGE_KEYS, CONSTANTS, API, API_STATUS_CODE} from "../../common";
 
 @injectable()
 export class ProcessRepo extends BaseRepository implements IProcessRepo {
   @inject(PUBLIC_TYPES.IWebApi) private api!: IWebApi;
-
+  
   async getMaterialDetail(id: string): Promise<MaterialDetailSdo> {
     const res: ApiResult = await this.api.get(API.GET_MATERIAL(id));
     let sdo: MaterialDetailSdo = {
@@ -26,7 +26,7 @@ export class ProcessRepo extends BaseRepository implements IProcessRepo {
     };
     return sdo;
   }
-
+  
   async createMaterial(
     ownerId: string,
     name: string,
@@ -43,30 +43,32 @@ export class ProcessRepo extends BaseRepository implements IProcessRepo {
       bluetooth: bleDeviceId,
       userInfo: userInfo
     };
-
+    
     const res: ApiResult = await this.api.post(API.CREATE_MATERIAL(), req);
     const sdo: CreateMaterialSdo = {
       ...this.transform(res),
       material: res.Data
     };
-
+    
     return sdo;
   }
-
+  
   async uploadMaterialImage(
     id: string,
-    imageName: string,
-    image: any
+    imageData: any,
+    imageName: string
   ): Promise<boolean> {
-    const files: any[] = [image];
+    const files: any[] = [imageData];
     const fileNames: string[] = [imageName];
-
+    const fileTypes: string[] = ['image/jpg'];
+    
     const res: ApiResult = await this.api.uploadFiles(
       API.UPLOAD_IMAGES(id),
       files,
-      fileNames
+      fileNames,
+      fileTypes
     );
-
+    
     return res.Status === API_STATUS_CODE.OK;
   }
 }

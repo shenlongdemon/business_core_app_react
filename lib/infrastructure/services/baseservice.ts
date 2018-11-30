@@ -130,14 +130,14 @@ export class BaseService {
           items: 'Male, Female'
         });
         properties.push({
-          id: `CHECKBOX ${i}`,
+          id: `IMAGE ${i}`,
           title: 'Upload images',
           type: DynPropertyType.IMAGE,
           value: '',
           items: ''
         });
         properties.push({
-          id: `CHECKBOX ${i}`,
+          id: `FILE ${i}`,
           title: 'Attach file',
           type: DynPropertyType.FILE,
           value: '',

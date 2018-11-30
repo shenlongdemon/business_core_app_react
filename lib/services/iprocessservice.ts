@@ -20,7 +20,7 @@ export interface IProcessService {
   createMaterial(
     name: string,
     description: string,
-    image: any,
+    imageData: any | null,
     bleDeviceId: string
   ): Promise<CreateMaterialDto>;
 }
