@@ -30,7 +30,7 @@ export interface IWebApi {
   
   delete(url: string): Promise<ApiResult>;
   
-  uploadFiles(url: string, files: any[], fileNames: string[], fileTypes: string[]): Promise<any>;
+  uploadFiles(url: string, fileUris: string[], fileNames: string[], fileTypes: string[]): Promise<any>;
   
   uploadFile(url: string, fileData: any, fileName: string, fileType: string): Promise<any>;
   

@@ -101,22 +101,32 @@ export class AxiosWebApi implements IWebApi {
   uploadFile = async (url: string, fileData: any, fileName: string, fileType: string): Promise<any> => {
     
     const body: FormData = new FormData();
-    body.append('file', fileData);
-    body.append('name', 'imgUploader');
+    body.append('file', `data:image/png;base64,${fileData.data}`);
+    body.append('name', 'file.jpg');
     
     const xhr: XMLHttpRequest = new XMLHttpRequest();
     xhr.open('POST', url);
     xhr.send(body);
   }
   
-  async uploadFiles(url: string, files: any[], fileNames: string[], fileTypes: string[]): Promise<any> {
+  async uploadFiles(url: string, fileUris: string[], fileNames: string[], fileTypes: string[]): Promise<any> {
+    
+    
     let apiResult: ApiResult;
     try {
-      const requests: Promise<AxiosResponse<any>>[] = files.map(
-        async (file: any, index: number) => {
+      const requests: Promise<AxiosResponse<any>>[] = fileUris.map(
+        async (uri: any, index: number) => {
           const instance: AxiosInstance = await this.getInstanceMultiPart();
           const formData: FormData = new FormData();
-          formData.append("imgUploader", file, fileNames[index]);
+          
+          const data = {
+            uri: uri,
+            type: fileTypes[index],
+            name: fileNames[index]
+          };
+          
+          // @ts-ignore
+          formData.append("file", data);
           formData.append('type', fileTypes[index])
           return instance.post(url, formData);
         }
@@ -234,14 +244,21 @@ export class AxiosWebApi implements IWebApi {
   };
   
   private async getInstanceMultiPart(): Promise<AxiosInstance> {
+    let headers: any = {};
+    if (this.genHeader) {
+      headers = await this.genHeader();
+    }
+    headers['Content-Type'] = 'application/octet-stream';
     
     const config: AxiosRequestConfig = {
+      headers: headers,
       timeout: 330000
     };
+    
     const instance: AxiosInstance = axios.create(config);
     
     return instance;
   }
   
- 
+  
 }

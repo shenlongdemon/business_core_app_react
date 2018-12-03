@@ -4,16 +4,9 @@ import {MaterialDetailSdo, CreateMaterialSdo} from "./sdo";
 
 export interface IProcessRepo {
   
-  uploadMaterialImage(materialId: string, imageData: any, imageName: string): Promise<boolean>;
+  uploadMaterialImage(materialId: string, imageUri: string, imageName: string): Promise<boolean>;
   
-  createMaterial(
-    ownerId: string,
-    name: string,
-    description: string,
-    imageName: string,
-    bleDeviceId: string,
-    userInfo: any
-  ): Promise<CreateMaterialSdo>;
+  createMaterial(ownerId: string, name: string, description: string, imageName: string, bleDeviceId: string, userInfo: any): Promise<CreateMaterialSdo>;
   
   getMaterialDetail(id: string): Promise<MaterialDetailSdo>;
 }

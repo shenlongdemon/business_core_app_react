@@ -53,18 +53,14 @@ export class ProcessRepo extends BaseRepository implements IProcessRepo {
     return sdo;
   }
   
-  async uploadMaterialImage(
-    id: string,
-    imageData: any,
-    imageName: string
-  ): Promise<boolean> {
-    const files: any[] = [imageData];
+  async uploadMaterialImage(id: string, imageUri: string, imageName: string): Promise<boolean> {
+    const fileUris: string[] = [imageUri];
     const fileNames: string[] = [imageName];
     const fileTypes: string[] = ['image/jpg'];
     
     const res: ApiResult = await this.api.uploadFiles(
       API.UPLOAD_IMAGES(id),
-      files,
+      fileUris,
       fileNames,
       fileTypes
     );

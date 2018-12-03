@@ -66,7 +66,7 @@ export class ProcessService extends BaseService implements IProcessService {
     return userInfo;
   };
   
-  createMaterial = async (name: string, description: string, imageData: any | null, bleDeviceId: string): Promise<CreateMaterialDto> => {
+  createMaterial = async (name: string, description: string, imageUri: string, bleDeviceId: string): Promise<CreateMaterialDto> => {
     debugger;
     const imageName: string = this.genImageName();
     
@@ -74,22 +74,17 @@ export class ProcessService extends BaseService implements IProcessService {
     
     const userInfo: UserInfo = await this.getUserInfo();
     
-    //const res: CreateMaterialSdo = await this.processRepo.createMaterial(userInfo.id, name, description, imageName, bleDeviceId, userInfo);
-    const res: CreateMaterialSdo = {isSuccess: true, message: ""};
+    const res: CreateMaterialSdo = await this.processRepo.createMaterial(userInfo.id, name, description, imageName, bleDeviceId, userInfo);
     
     let material: Material | null = null;
     if (res.isSuccess && res.material) {
       material = this.mappingMaterial(res.material);
       if (material) {
-        // await this.processRepo.uploadMaterialImage(
-        //   material.id,
-        //   imageName,
-        //   image
-        // );
+        await this.processRepo.uploadMaterialImage(material.id, imageUri, `${material.id}.jpg`);
       }
     }
     const materialId: string = uuidv4();
-    await this.processRepo.uploadMaterialImage(materialId, imageData, `${materialId.toString().replace(/-/g, "")}.jpg`);
+    
     
     const dto: CreateMaterialDto = {
       ...this.populate(res),
