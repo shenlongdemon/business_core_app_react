@@ -32,15 +32,34 @@ export class ProcessService extends BaseService implements IProcessService {
   @inject(PUBLIC_TYPES.IStore) private store!: IStore;
   
   getMaterialDetail = async (id: string): Promise<MaterialDetailDto> => {
-    const res: MaterialDetailSdo = await this.processRepo.getMaterialDetail(id);
-    let material: Material | null = null;
-    if (res.isSuccess && res.material) {
-      material = this.mappingMaterial(res.material);
-    }
+    
+    let materrial: Material = {
+      name: "asdasd",
+      ownerId: 'dsdsda',
+      description: 'sdsdsds',
+      code: 'dsadsda',
+      bluetooth: 'dasdadasd',
+      tasks: [],
+      imageUrl: 'dsad',
+      createdAt: 1212,
+      updatedAt: 12121,
+      id:'1212121',
+    };
+    const res: MaterialDetailSdo = {
+      isSuccess: true,
+      message: ''
+    };
+    const amaterial: Material| null = this.mappingMaterial(materrial);
+    
+    // const res: MaterialDetailSdo = await this.processRepo.getMaterialDetail(id);
+    // let material: Material | null = null;
+    // if (res.isSuccess && res.material) {
+    //   material = this.mappingMaterial(res.material);
+    // }
     
     const dto: MaterialDetailDto = {
       ...this.populate(res),
-      material: material
+      material: amaterial
     };
     
     return dto;
