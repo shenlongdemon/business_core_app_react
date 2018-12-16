@@ -9,8 +9,8 @@ export class BaseRepository {
 
   protected transform = (apiResult: ApiResult): BaseSdo => {
     let baseSdo: BaseSdo = {
-      isSuccess: apiResult.Status === API_STATUS_CODE.OK,
-      message: apiResult.Message,
+      isSuccess: apiResult.code === API_STATUS_CODE.OK,
+      message: apiResult.message,
       __debug: apiResult
     };
 

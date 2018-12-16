@@ -1,9 +1,12 @@
 /// <reference path="../infrastructure/services/processservice.ts" />
 
-import { CreateMaterialDto, MaterialDetailDto } from "./dto";
-import { Material } from "./model";
+import {CreateMaterialDto, MaterialDetailDto, ProcessListDto} from "./dto";
+import {Bluetooth} from "../models";
 
 export interface IProcessService {
+  
+  getProcesses(): Promise<ProcessListDto>;
+  
   /**
    * get magerial full detail by id
    * @param id
@@ -20,7 +23,7 @@ export interface IProcessService {
   createMaterial(
     name: string,
     description: string,
-    imageData: any | null,
-    bleDeviceId: string
+    imageUri: string,
+    bluetooth: Bluetooth| null
   ): Promise<CreateMaterialDto>;
 }

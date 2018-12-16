@@ -1,6 +1,6 @@
 /// <reference path="../infrastructure/services/authservice.ts" />
 
-import { LoginSdo, BaseSdo } from "../repositories/sdo";
+import { BaseSdo } from "../repositories/sdo";
 
 export interface IAuthService {
   /**

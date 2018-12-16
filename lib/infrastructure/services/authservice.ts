@@ -1,10 +1,9 @@
-import { IAuthService, User } from "../../services";
+import { IAuthService } from "../../services";
+import {  User } from "../../models";
 import { IStore } from "../../repositories";
 import { IAuthRepo, LoginSdo } from "../../repositories";
 import { injectable, inject } from "inversify";
 import { PUBLIC_TYPES, PRIVATE_TYPES } from "../identifiers";
-import { CONSTANTS, API_STATUS_CODE } from "../../common";
-import { ApiResult } from "../../webapi";
 import { BaseService } from "./baseservice";
 import { BaseDto } from "../../services";
 

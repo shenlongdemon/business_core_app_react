@@ -54,9 +54,9 @@ export class AxiosWebApi implements IWebApi {
       const response: AxiosResponse<any> = await instance.get<ApiResult>(url);
       
       apiResult = {
-        Data: response.data,
-        Message: response.statusText,
-        Status: API_STATUS_CODE.OK
+        data: response.data,
+        message: response.statusText,
+        code: API_STATUS_CODE.OK
       };
     } catch (e) {
       apiResult = this.catchException(e);
@@ -84,30 +84,30 @@ export class AxiosWebApi implements IWebApi {
   
   async put(url: string, data: any): Promise<ApiResult> {
     return {
-      Data: null,
-      Message: "",
-      Status: 0
+      data: null,
+      message: "",
+      code: 0
     };
   }
   
   async delete(url: string): Promise<ApiResult> {
     return {
-      Data: null,
-      Message: "",
-      Status: 0
+      data: null,
+      message: "",
+      code: 0
     };
   }
-  
-  uploadFile = async (url: string, fileData: any, fileName: string, fileType: string): Promise<any> => {
-    
-    const body: FormData = new FormData();
-    body.append('file', `data:image/png;base64,${fileData.data}`);
-    body.append('name', 'file.jpg');
-    
-    const xhr: XMLHttpRequest = new XMLHttpRequest();
-    xhr.open('POST', url);
-    xhr.send(body);
-  }
+  //
+  // uploadFile = async (url: string, fileData: any, fileName: string, fileType: string): Promise<any> => {
+  //  
+  //   const body: FormData = new FormData();
+  //   body.append('file', `data:image/png;base64,${fileData.data}`);
+  //   body.append('name', 'file.jpg');
+  //  
+  //   const xhr: XMLHttpRequest = new XMLHttpRequest();
+  //   xhr.open('POST', url);
+  //   xhr.send(body);
+  // }
   
   async uploadFiles(url: string, fileUris: string[], fileNames: string[], fileTypes: string[]): Promise<any> {
     
@@ -126,7 +126,7 @@ export class AxiosWebApi implements IWebApi {
           };
           
           // @ts-ignore
-          formData.append("file", data);
+          formData.append("files", data);
           formData.append('type', fileTypes[index])
           return instance.post(url, formData);
         }
@@ -134,9 +134,9 @@ export class AxiosWebApi implements IWebApi {
       
       const responses: AxiosResponse<any>[] = await axios.all(requests);
       apiResult = {
-        Data: responses,
-        Message: CONSTANTS.STR_EMPTY,
-        Status: API_STATUS_CODE.OK
+        data: responses,
+        message: CONSTANTS.STR_EMPTY,
+        code: API_STATUS_CODE.OK
       };
     } catch (e) {
       apiResult = this.catchException(e);
@@ -190,9 +190,9 @@ export class AxiosWebApi implements IWebApi {
       this.handleException(errorResilt);
     }
     const apiResult = {
-      Data: e,
-      Message: CONSTANTS.STR_EMPTY,
-      Status: API_STATUS_CODE.EXCEPTION
+      data: e,
+      message: CONSTANTS.STR_EMPTY,
+      code: API_STATUS_CODE.EXCEPTION
     };
     
     return apiResult;
@@ -210,18 +210,18 @@ export class AxiosWebApi implements IWebApi {
         __debug: response
       });
       apiResult = {
-        Data: response.data,
-        Message: response.statusText,
-        Status: API_STATUS_CODE.EXCEPTION
+        data: response.data,
+        message: response.statusText,
+        code: API_STATUS_CODE.EXCEPTION
       };
     } else {
       apiResult = response.data;
-      if (apiResult.Status !== API_STATUS_CODE.OK && this.handleBusiness) {
+      if (apiResult.code !== API_STATUS_CODE.OK && this.handleBusiness) {
         this.handleBusiness({
-          businessCode: apiResult.Status,
-          error: apiResult.Data,
+          businessCode: apiResult.code,
+          error: apiResult.data,
           httpCode: HTTPC_CODE.OK,
-          message: apiResult.Message,
+          message: apiResult.message,
           __debug: response
         });
       }

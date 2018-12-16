@@ -13,7 +13,7 @@ import {inject, injectable} from "inversify";
 import {IWebApi, ApiResult} from "../../webapi";
 import {PUBLIC_TYPES, PRIVATE_TYPES} from "../identifiers";
 import {STORAGE_KEYS, CONSTANTS, API, API_STATUS_CODE} from "../../common";
-
+import {Bluetooth, UserInfo} from '../../models';
 @injectable()
 export class ProcessRepo extends BaseRepository implements IProcessRepo {
   @inject(PUBLIC_TYPES.IWebApi) private api!: IWebApi;
@@ -22,36 +22,45 @@ export class ProcessRepo extends BaseRepository implements IProcessRepo {
     const res: ApiResult = await this.api.get(API.GET_MATERIAL(id));
     let sdo: MaterialDetailSdo = {
       ...this.transform(res),
-      material: res.Data
+      material: res.data
     };
     return sdo;
   }
   
-  async createMaterial(
-    ownerId: string,
-    name: string,
-    description: string,
-    imageName: string,
-    bleDeviceId: string,
-    userInfo: any
-  ): Promise<CreateMaterialSdo> {
+  createMaterial = async (ownerId: string,
+                          name: string,
+                          description: string,
+                          imagName: string,
+                          bluetooth: Bluetooth | null,
+                          userInfo: UserInfo): Promise<CreateMaterialSdo> => {
     const req: CreateMaterialRequest = {
       ownerId: ownerId,
       name: name,
       description: description,
-      imageUrl: imageName,
-      bluetooth: bleDeviceId,
+      imageName: imagName,
+      bluetooth: bluetooth,
       userInfo: userInfo
     };
     
     const res: ApiResult = await this.api.post(API.CREATE_MATERIAL(), req);
     const sdo: CreateMaterialSdo = {
       ...this.transform(res),
-      material: res.Data
+      material: res.data
     };
     
     return sdo;
   }
+  
+  
+  async getProcesses(userId: string): Promise<ProcessListSdo> {
+    const res: ApiResult = await this.api.get(API.GET_PROCESSES(userId));
+    const sdo: ProcessListSdo = {
+      ...this.transform(res),
+      materials: res.data ? res.data : []
+    };
+    return sdo;
+  }
+  
   
   async uploadMaterialImage(id: string, imageUri: string, imageName: string): Promise<boolean> {
     const fileUris: string[] = [imageUri];
@@ -65,6 +74,6 @@ export class ProcessRepo extends BaseRepository implements IProcessRepo {
       fileTypes
     );
     
-    return res.Status === API_STATUS_CODE.OK;
+    return res.code === API_STATUS_CODE.OK;
   }
 }

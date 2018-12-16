@@ -32,7 +32,5 @@ export interface IWebApi {
   
   uploadFiles(url: string, fileUris: string[], fileNames: string[], fileTypes: string[]): Promise<any>;
   
-  uploadFile(url: string, fileData: any, fileName: string, fileType: string): Promise<any>;
-  
   request(url: string): Promise<ApiResult>;
 }

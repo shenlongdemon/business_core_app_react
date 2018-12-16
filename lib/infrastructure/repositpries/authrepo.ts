@@ -21,7 +21,7 @@ export class AuthRepo extends BaseRepository implements IAuthRepo {
     let res = await this.api.post(API.LOGIN(), data);
     let loginSdo: LoginSdo = {
       ...this.transform(res),
-      user: res.Data
+      user: res.data
     };
     return loginSdo;
   };

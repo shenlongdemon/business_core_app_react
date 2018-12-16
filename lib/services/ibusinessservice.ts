@@ -2,11 +2,9 @@
 
 import {
   ItemListDto,
-  ProcessListDto,
-  ProcessDetailDto,
   ObjectOfQRCodeDto
 } from "./dto";
-import { Item, ItemHistory, Position, User } from "./model";
+import { Item, ItemHistory, Position, User } from "../models";
 
 export interface IBusinessService {
   saveCurrentPosition(position: Position): any;
@@ -19,7 +17,6 @@ export interface IBusinessService {
 
   getItems(): Promise<ItemListDto>;
 
-  getProcesses(): Promise<ProcessListDto>;
 
   getObjectByQRCode(code: string): Promise<ObjectOfQRCodeDto>;
 

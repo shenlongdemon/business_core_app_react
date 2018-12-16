@@ -17,7 +17,7 @@ const HTTPC_CODE = {
 };
 
 const API_STATUS_CODE = {
-  OK: 1,
+  OK: 0,
   EXCEPTION: -1
 };
 

@@ -5,7 +5,8 @@ import {
   ObjectOfQRCodeSdo,
   ProcessListSdo,
   WeatherDataSdo,
-  ObjectOfQRCodeRequest
+  ObjectOfQRCodeRequest,
+  BaseSdo
 } from "../../repositories";
 import { inject, injectable } from "inversify";
 import { IWebApi, ApiResult } from "../../webapi";
@@ -20,16 +21,7 @@ export class BusinessRepo extends BaseRepository implements IBusinessRepo {
     const res: ApiResult = await this.api.get(API.GET_ITEMS(userId));
     const sdo: GoodsListSdo = {
       ...this.transform(res),
-      goodses: res.Data ? res.Data : []
-    };
-    return sdo;
-  }
-
-  async getProcesses(userId: string): Promise<ProcessListSdo> {
-    const res: ApiResult = await this.api.get(API.GET_PROCESSES(userId));
-    const sdo: ProcessListSdo = {
-      ...this.transform(res),
-      materials: res.Data ? res.Data : []
+      goodses: res.data ? res.data : []
     };
     return sdo;
   }
@@ -43,7 +35,7 @@ export class BusinessRepo extends BaseRepository implements IBusinessRepo {
     );
     const sdo: WeatherDataSdo = {
       ...this.transform(res),
-      weather: res.Data
+      weather: res.data
     };
 
     return sdo;
@@ -56,9 +48,21 @@ export class BusinessRepo extends BaseRepository implements IBusinessRepo {
     const res: ApiResult = await this.api.post(API.GET_OBJECT_BY_QRCODE(), req);
     const sdo: ObjectOfQRCodeSdo = {
       ...this.transform(res),
-      object: res.Data
+      object: res.data
     };
 
+    return sdo;
+  }
+  
+  uploadImage = async (imageName: string, imageUri: string): Promise<BaseSdo> => {
+    const fileNames: string[] = [imageName];
+    const fileUris: string[] = [imageUri];
+    const fileTypes: string[] = ['image/png'];
+    const res: ApiResult = await  this.api.uploadFiles(API.UPLOAD_FILES(), fileUris, fileNames, fileTypes);
+    const sdo: ObjectOfQRCodeSdo = {
+      ...this.transform(res)
+    };
+  
     return sdo;
   }
 }

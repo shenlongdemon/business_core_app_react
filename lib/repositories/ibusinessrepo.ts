@@ -3,16 +3,17 @@
 import {
   GoodsListSdo,
   ObjectOfQRCodeSdo,
-  ProcessListSdo,
-  WeatherDataSdo
+  WeatherDataSdo,
+  BaseSdo
 } from "./sdo";
 
 export interface IBusinessRepo {
+  uploadImage(imageName: string, imageUri: string): Promise<BaseSdo>;
+  
   getObjectByQRCode(code: string): Promise<ObjectOfQRCodeSdo>;
 
   getWeather(latitude: number, longitude: number): Promise<WeatherDataSdo>;
 
   getItems(userId: string): Promise<GoodsListSdo>;
 
-  getProcesses(userId: string): Promise<ProcessListSdo>;
 }
