@@ -37,7 +37,7 @@ export class ProcessRepo extends BaseRepository implements IProcessRepo {
       ownerId: ownerId,
       name: name,
       description: description,
-      imageName: imagName,
+      imageUrl: imagName,
       bluetooth: bluetooth,
       userInfo: userInfo
     };

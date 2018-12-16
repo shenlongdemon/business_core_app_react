@@ -4,7 +4,7 @@ export interface CreateMaterialRequest {
   ownerId: string;
   name: string;
   description: string;
-  imageName: string;
+  imageUrl: string;
   bluetooth: Bluetooth | null;
   userInfo: UserInfo;
 }

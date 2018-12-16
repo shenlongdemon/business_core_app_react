@@ -43,7 +43,7 @@ export class AxiosWebApi implements IWebApi {
     } catch (e) {
       apiResult = this.catchException(e);
     }
-    
+    console.log(apiResult);
     return apiResult;
   }
   
@@ -78,7 +78,7 @@ export class AxiosWebApi implements IWebApi {
     } catch (e) {
       apiResult = this.catchException(e);
     }
-    
+    console.log(apiResult);
     return apiResult;
   }
   

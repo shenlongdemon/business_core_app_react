@@ -85,7 +85,7 @@ export class BusinessService extends BaseService implements IBusinessService {
   }
   
   getLinkImage(relative: string): string {
-    const link: string = `${ENV.HOST}/uploads/${relative}`;
+    const link: string = `${ENV.HOST}/sellrecognizer/${relative}`;
     LOGGER.log(link);
     return link;
   }
