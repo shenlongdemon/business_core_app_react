@@ -1,17 +1,18 @@
 import {BaseSdo} from "../../repositories";
+import {BaseDto,} from "../../services";
 import {
-  BaseDto,
-} from "../../services";
-import { User,
-  Item,
-  Process,
-  Material,
-  Weather,
-  ScanQRItem,
-  Task,
   DynProperty,
-  DynPropertyType} from '../../models';
+  DynPropertyType,
+  Item,
+  Material,
+  Process,
+  ProcessStatus,
+  ScanQRItem,
+  User,
+  Weather
+} from '../../models';
 import {injectable} from "inversify";
+import {CONSTANTS} from "../../common";
 
 @injectable()
 export class BaseService {
@@ -98,97 +99,97 @@ export class BaseService {
   
   protected mappingMaterial(data: any): Material | null {
     const material: Material | null = this.mappingByJSON(data);
-    if (material) {
-      const tasks: Task[] = [];
-      
-      
-      for (let i = 0; i < 5; i++) {
-        const properties: DynProperty[] = [];
-        properties.push({
-          id: `TEXT ${i}`,
-          title: 'Name',
-          type: DynPropertyType.TEXT,
-          value: 'default text',
-          items: ''
-        });
-        properties.push({
-          id: `TEXT1 ${i}`,
-          title: 'Name',
-          type: DynPropertyType.TEXT,
-          value: 'default text',
-          items: ''
-        });
-        properties.push({
-          id: `TEXT2 ${i}`,
-          title: 'Name',
-          type: DynPropertyType.TEXT,
-          value: 'default text',
-          items: ''
-        });
-        properties.push({
-          id: `CHECKBOX ${i}`,
-          title: 'Colors',
-          type: DynPropertyType.CHECKBOX,
-          value: 'Red',
-          items: 'White,Red'
-        });
-        properties.push({
-          id: `CHECKBOX1 ${i}`,
-          title: 'Colors 3 dsd ',
-          type: DynPropertyType.CHECKBOX,
-          value: 'Red',
-          items: 'White,Red,Yellow, Black'
-        });
-        properties.push({
-          id: `COMBOBOX ${i}`,
-          title: 'Colors',
-          type: DynPropertyType.COMBOBOX,
-          value: 'Red',
-          items: 'White,Red'
-        });
-        properties.push({
-          id: `RADIO ${i}`,
-          title: 'Gender',
-          type: DynPropertyType.RADIO,
-          value: 'Female',
-          items: 'Male,Female'
-        });
-        properties.push({
-          id: `IMAGE ${i}`,
-          title: 'Upload images',
-          type: DynPropertyType.IMAGE,
-          value: '',
-          items: ''
-        });
-        properties.push({
-          id: `IMAGE1 ${i}`,
-          title: 'Upload images',
-          type: DynPropertyType.IMAGE,
-          value: '34160c7c2e054140bd04849b75404dd7.jpg',
-          items: ''
-        });
-        properties.push({
-          id: `FILE ${i}`,
-          title: 'Attach file',
-          type: DynPropertyType.FILE,
-          value: '',
-          items: ''
-        });
-        
-        const task: Task = {
-          id: `task ${i}`,
-          name: `task ${i}`,
-          code: `task code ${i}`,
-          workers: [],
-          materialId: material.id,
-          materialOwnerId: material.ownerId,
-          properties: properties
-        };
-        tasks.push(task)
-        
-      }
-      material.tasks = tasks;
-    }
+    // if (material) {
+    //   const processes: Process[] = [];
+    //   for (let i = 0; i < 5; i++) {
+    //     const properties: DynProperty[] = [];
+    //     properties.push({
+    //       id: `TEXT ${i}`,
+    //       title: 'Name',
+    //       type: DynPropertyType.TEXT,
+    //       value: 'default text',
+    //       items: ''
+    //     });
+    //     properties.push({
+    //       id: `TEXT1 ${i}`,
+    //       title: 'Name',
+    //       type: DynPropertyType.TEXT,
+    //       value: 'default text',
+    //       items: ''
+    //     });
+    //     properties.push({
+    //       id: `TEXT2 ${i}`,
+    //       title: 'Name',
+    //       type: DynPropertyType.TEXT,
+    //       value: 'default text',
+    //       items: ''
+    //     });
+    //     properties.push({
+    //       id: `CHECKBOX ${i}`,
+    //       title: 'Check box Colors',
+    //       type: DynPropertyType.CHECKBOX,
+    //       value: 'Red',
+    //       items: 'White,Red'
+    //     });
+    //     properties.push({
+    //       id: `CHECKBOX1 ${i}`,
+    //       title: 'Colors 3 dsd ',
+    //       type: DynPropertyType.CHECKBOX,
+    //       value: 'Red',
+    //       items: 'White,Red,Yellow, Black'
+    //     });
+    //     properties.push({
+    //       id: `COMBOBOX ${i}`,
+    //       title: 'Colors',
+    //       type: DynPropertyType.COMBOBOX,
+    //       value: 'Red',
+    //       items: 'White,Red'
+    //     });
+    //     properties.push({
+    //       id: `RADIO ${i}`,
+    //       title: 'Gender',
+    //       type: DynPropertyType.RADIO,
+    //       value: 'Female',
+    //       items: 'Male,Female'
+    //     });
+    //     properties.push({
+    //       id: `IMAGE ${i}`,
+    //       title: 'Upload images',
+    //       type: DynPropertyType.IMAGE,
+    //       value: '',
+    //       items: ''
+    //     });
+    //     properties.push({
+    //       id: `IMAGE1 ${i}`,
+    //       title: 'Upload images',
+    //       type: DynPropertyType.IMAGE,
+    //       value: '34160c7c2e054140bd04849b75404dd7.jpg',
+    //       items: ''
+    //     });
+    //     properties.push({
+    //       id: `FILE ${i}`,
+    //       title: 'Attach file',
+    //       type: DynPropertyType.FILE,
+    //       value: '',
+    //       items: ''
+    //     });
+    //
+    //     const process: Process = {
+    //       id: `task ${i}`,
+    //       name: `task ${i}`,
+    //       code: `task code ${i}`,
+    //       workers: [],
+    //       dynProperties: properties,
+    //       status: ProcessStatus.TODO,
+    //       activities: [],
+    //       index: i,
+    //       materialId: CONSTANTS.STR_EMPTY
+    //     };
+    //     processes.push(process)
+    //
+    //   }
+    //   material.processes = processes;
+    // }
     return material;
   }
   

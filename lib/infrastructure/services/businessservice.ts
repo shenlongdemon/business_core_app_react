@@ -70,6 +70,23 @@ export class BusinessService extends BaseService implements IBusinessService {
     return dto;
   }
   
+  getLink(relative: string): string {
+    const link: string = `${ENV.HOST}/sellrecognizer/${relative}`;
+    LOGGER.log(link);
+    return link;
+  }
+  
+  
+  getCurrentPosition = async (): Promise<Position> => {
+    const position: Position = await this.store.getCurrentPosition();
+    return position;
+  };
+  
+  getUser = async (): Promise<User> => {
+    const user: User | null = await this.store.getUser();
+    return user!;
+  };
+  
   toDateString(time: number): string {
     const date: string = moment(time).format(CONSTANTS.DATE_FORMAT);
     return date;
@@ -84,11 +101,6 @@ export class BusinessService extends BaseService implements IBusinessService {
     await this.store.saveCurrentPosition(position);
   }
   
-  getLinkImage(relative: string): string {
-    const link: string = `${ENV.HOST}/sellrecognizer/${relative}`;
-    LOGGER.log(link);
-    return link;
-  }
   
   private getUserId = async (): Promise<string> => {
     const user: User | null = await this.store.getUser();
@@ -99,13 +111,4 @@ export class BusinessService extends BaseService implements IBusinessService {
     return userId;
   };
   
-  getCurrentPosition = async (): Promise<Position> => {
-    const position: Position = await this.store.getCurrentPosition();
-    return position;
-  };
-  
-  getUser = async (): Promise<User> => {
-    const user: User | null = await this.store.getUser();
-    return user!;
-  };
 }

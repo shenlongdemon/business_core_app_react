@@ -1,6 +1,6 @@
-import { ScanQRItemType } from "../common";
+import { ScanQRItemType } from "../services/common";
 
 export interface ScanQRItem {
-  type?: ScanQRItemType;
-  item?: any | null;
+  type: ScanQRItemType;
+  item: any | null;
 }

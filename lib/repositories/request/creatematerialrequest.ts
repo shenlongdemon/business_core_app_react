@@ -1,10 +1,9 @@
 import {Bluetooth, UserInfo} from '../../models';
 
 export interface CreateMaterialRequest {
-  ownerId: string;
+  owner: any;
   name: string;
   description: string;
   imageUrl: string;
   bluetooth: Bluetooth | null;
-  userInfo: UserInfo;
 }

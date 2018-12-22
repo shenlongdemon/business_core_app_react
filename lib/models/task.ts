@@ -1,5 +1,4 @@
 import { IObject } from "./iobject";
-import { Worker } from "./worker";
 import { DynProperty } from "./dynproperty";
 
 export interface Task extends IObject {

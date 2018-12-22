@@ -1,9 +1,14 @@
 /// <reference path="../infrastructure/services/processservice.ts" />
 
-import {CreateMaterialDto, MaterialDetailDto, ProcessListDto} from "./dto";
-import {Bluetooth} from "../models";
+import {CreateMaterialDto, MaterialDetailDto, ProcessListDto, BaseDto} from "./dto";
+import {Bluetooth, Process, DynProperty} from "../models";
 
 export interface IProcessService {
+  /**
+   * Update process detail with dynamic infomation
+   * @param process
+   */
+  updateProcessDynProperties(materialId: string, processId: string, properties: DynProperty[]): Promise<BaseDto>;
   
   getProcesses(): Promise<ProcessListDto>;
   

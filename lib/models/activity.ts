@@ -1,14 +1,11 @@
 import { IObject } from "./iobject";
-import { User } from "./user";
-import { Coord } from "./coord";
+import { UserInfo } from "./userinfo";
 
 export interface Activity extends IObject {
   title: string;
   description: string;
   time: number;
-  images: string[];
-  files: string[] | null;
-  logoTaskUrl: string;
-  worker: User;
-  coord: Coord;
+  image: string;
+  file: string;
+  worker: UserInfo
 }

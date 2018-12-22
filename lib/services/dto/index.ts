@@ -6,3 +6,4 @@ export { ProcessDetailDto } from "./processdetaildto";
 export { MaterialDetailDto } from "./materialdetaildto";
 export { CreateMaterialDto } from "./creatematerialdto";
 export { ObjectOfQRCodeDto } from "./objectofqrcodedto";
+export { UpdateProcessDto } from "./UpdateProcessDto";

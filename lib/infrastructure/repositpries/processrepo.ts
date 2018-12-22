@@ -1,24 +1,24 @@
 import {BaseRepository} from "./baserepository";
 import {
   IProcessRepo,
-  GoodsListSdo,
-  LoginSdo,
   ProcessListSdo,
   MaterialDetailSdo,
-  ProcessDetailSdo,
   CreateMaterialSdo,
-  CreateMaterialRequest
+  BaseSdo,
+  CreateMaterialRequest,
+  UpdateProcessDynPropertiesReq
 } from "../../repositories";
 import {inject, injectable} from "inversify";
 import {IWebApi, ApiResult} from "../../webapi";
-import {PUBLIC_TYPES, PRIVATE_TYPES} from "../identifiers";
-import {STORAGE_KEYS, CONSTANTS, API, API_STATUS_CODE} from "../../common";
+import {PUBLIC_TYPES} from "../identifiers";
+import { API, API_STATUS_CODE} from "../../common";
 import {Bluetooth, UserInfo} from '../../models';
+
 @injectable()
 export class ProcessRepo extends BaseRepository implements IProcessRepo {
   @inject(PUBLIC_TYPES.IWebApi) private api!: IWebApi;
   
-  async getMaterialDetail(id: string): Promise<MaterialDetailSdo> {
+  getMaterialDetail = async (id: string): Promise<MaterialDetailSdo> => {
     const res: ApiResult = await this.api.get(API.GET_MATERIAL(id));
     let sdo: MaterialDetailSdo = {
       ...this.transform(res),
@@ -27,19 +27,17 @@ export class ProcessRepo extends BaseRepository implements IProcessRepo {
     return sdo;
   }
   
-  createMaterial = async (ownerId: string,
-                          name: string,
+  createMaterial = async (name: string,
                           description: string,
-                          imagName: string,
-                          bluetooth: Bluetooth | null,
-                          userInfo: UserInfo): Promise<CreateMaterialSdo> => {
+                          imageName: string,
+                          bluetooth: any | null,
+                          owner: any): Promise<CreateMaterialSdo> => {
     const req: CreateMaterialRequest = {
-      ownerId: ownerId,
+      owner: owner,
       name: name,
       description: description,
-      imageUrl: imagName,
+      imageUrl: imageName,
       bluetooth: bluetooth,
-      userInfo: userInfo
     };
     
     const res: ApiResult = await this.api.post(API.CREATE_MATERIAL(), req);
@@ -75,5 +73,18 @@ export class ProcessRepo extends BaseRepository implements IProcessRepo {
     );
     
     return res.code === API_STATUS_CODE.OK;
+  }
+  
+  updateProcessDynProperties = async (materialId: string, processId: string, properties: any): Promise<BaseSdo> => {
+    const req: UpdateProcessDynPropertiesReq = {
+      materialId: materialId,
+      processId: processId,
+      properties: properties
+    };
+    const res: ApiResult = await this.api.post(API.UPDATE_PROCESS_DYN_PROPERTIES(), req);
+    const sdo: BaseSdo = {
+      ...this.transform(res)
+    };
+    return sdo;
   }
 }

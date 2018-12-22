@@ -83,11 +83,20 @@ export class AxiosWebApi implements IWebApi {
   }
   
   async put(url: string, data: any): Promise<ApiResult> {
-    return {
-      data: null,
-      message: "",
-      code: 0
-    };
+    let apiResult: ApiResult;
+    try {
+      const instance: AxiosInstance = await this.getInstance();
+      const response: AxiosResponse<ApiResult> = await instance.put<ApiResult>(
+        url,
+        data
+      );
+      
+      apiResult = this.handle(response);
+    } catch (e) {
+      apiResult = this.catchException(e);
+    }
+    console.log(apiResult);
+    return apiResult;
   }
   
   async delete(url: string): Promise<ApiResult> {
@@ -97,6 +106,7 @@ export class AxiosWebApi implements IWebApi {
       code: 0
     };
   }
+  
   //
   // uploadFile = async (url: string, fileData: any, fileName: string, fileType: string): Promise<any> => {
   //  

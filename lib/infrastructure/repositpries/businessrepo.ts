@@ -65,4 +65,13 @@ export class BusinessRepo extends BaseRepository implements IBusinessRepo {
   
     return sdo;
   }
+  
+  uploadFiles = async (fileUris:string[], fileNames: string[], fileTypes: string[], ): Promise<BaseSdo> => {
+    const res: ApiResult = await  this.api.uploadFiles(API.UPLOAD_FILES(), fileUris, fileNames, fileTypes);
+    const sdo: ObjectOfQRCodeSdo = {
+      ...this.transform(res)
+    };
+    
+    return sdo;
+  }
 }

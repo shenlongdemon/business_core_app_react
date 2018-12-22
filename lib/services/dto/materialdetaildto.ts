@@ -1,5 +1,5 @@
 import { BaseDto } from "./basedto";
-import { Material } from "../model/material";
+import { Material } from "../../models";
 export interface MaterialDetailDto extends BaseDto {
   material?: Material | null;
 }
