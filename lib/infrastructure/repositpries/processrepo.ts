@@ -5,14 +5,16 @@ import {
   MaterialDetailSdo,
   CreateMaterialSdo,
   BaseSdo,
+  ProcessSdo,
   CreateMaterialRequest,
-  UpdateProcessDynPropertiesReq
+  UpdateProcessDynPropertiesReq,
+  AssignWorkerSdo,
+  AssignWorkerReq
 } from "../../repositories";
 import {inject, injectable} from "inversify";
 import {IWebApi, ApiResult} from "../../webapi";
 import {PUBLIC_TYPES} from "../identifiers";
 import { API, API_STATUS_CODE} from "../../common";
-import {Bluetooth, UserInfo} from '../../models';
 
 @injectable()
 export class ProcessRepo extends BaseRepository implements IProcessRepo {
@@ -86,5 +88,23 @@ export class ProcessRepo extends BaseRepository implements IProcessRepo {
       ...this.transform(res)
     };
     return sdo;
+  }
+  
+  assignWorker = async (userId: string, materialId: string, processId: string): Promise<AssignWorkerSdo> => {
+    const req: AssignWorkerReq = {userId, materialId, processId};
+    const res: ApiResult = await this.api.post(API.ASSIGN_WORKER(), req);
+    return {
+      ...this.transform(res),
+      user: res.data
+    };
+  }
+  
+  getProcess = async (materialId: string, processId: string): Promise<ProcessSdo> => {
+    const req: any = {materialId: materialId, processId: processId};
+    const res: ApiResult = await this.api.post(API.GET_PROCESS(), req);
+    return {
+      ...this.transform(res),
+      process: res.data
+    };
   }
 }

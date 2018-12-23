@@ -7,3 +7,5 @@ export * from "./materialdetailsdo";
 export * from "./weatherdatasdo";
 export * from "./creatematerialsdo";
 export * from "./objectbycodesdo";
+export * from "./AssignWorkerSdo";
+export * from "./ProcessSdo";

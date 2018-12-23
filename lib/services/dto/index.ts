@@ -7,3 +7,5 @@ export { MaterialDetailDto } from "./materialdetaildto";
 export { CreateMaterialDto } from "./creatematerialdto";
 export { ObjectByCodeDto } from "./objectbycodedto";
 export { UpdateProcessDto } from "./UpdateProcessDto";
+export { AssignWorkerDto} from "./AssignWorkerDto";
+export { ProcessDto} from "./ProcessDto";

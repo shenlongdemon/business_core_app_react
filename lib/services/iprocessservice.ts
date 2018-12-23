@@ -1,9 +1,10 @@
 /// <reference path="../infrastructure/services/processservice.ts" />
 
-import {CreateMaterialDto, MaterialDetailDto, ProcessListDto, BaseDto} from "./dto";
-import {Bluetooth, Process, DynProperty} from "../models";
+import {CreateMaterialDto,ProcessDto, MaterialDetailDto, ProcessListDto, BaseDto, AssignWorkerDto} from "./dto";
+import {Bluetooth, DynProperty} from "../models";
 
 export interface IProcessService {
+  getProcess(materialId: string, processId: string): Promise<ProcessDto>;
   /**
    * Update process detail with dynamic infomation
    * @param process
@@ -31,4 +32,6 @@ export interface IProcessService {
     imageUri: string,
     bluetooth: Bluetooth| null
   ): Promise<CreateMaterialDto>;
+  
+  assignWorker(userId: string, materialId: string, processId: string) : Promise<AssignWorkerDto>
 }

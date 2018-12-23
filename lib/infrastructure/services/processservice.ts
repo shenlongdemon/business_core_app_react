@@ -1,4 +1,12 @@
-import {BaseDto, CreateMaterialDto, IProcessService, MaterialDetailDto, ProcessListDto} from "../../services";
+import {
+  BaseDto,
+  AssignWorkerDto,
+  CreateMaterialDto,
+  IProcessService,
+  MaterialDetailDto,
+  ProcessListDto,
+  ProcessDto
+} from "../../services";
 import {
   Bluetooth,
   DynProperty,
@@ -7,7 +15,8 @@ import {
   Position,
   User,
   UserInfo,
-  Weather
+  Weather,
+  Process
 } from "../../models";
 import {BaseService} from "./baseservice";
 import {inject, injectable} from "inversify";
@@ -20,7 +29,9 @@ import {
   MaterialDetailSdo,
   ProcessListSdo,
   WeatherDataSdo,
-  BaseSdo
+  BaseSdo,
+  AssignWorkerSdo,
+  ProcessSdo
 } from "../../repositories";
 import {CONSTANTS} from "../../common";
 
@@ -34,7 +45,7 @@ export class ProcessService extends BaseService implements IProcessService {
   @inject(PUBLIC_TYPES.IStore) private store!: IStore;
   
   getMaterialDetail = async (id: string): Promise<MaterialDetailDto> => {
-   
+    
     const res: MaterialDetailSdo = await this.processRepo.getMaterialDetail(id);
     let material: Material | null = null;
     if (res.isSuccess && res.material) {
@@ -79,7 +90,7 @@ export class ProcessService extends BaseService implements IProcessService {
       position!.longitude
     );
     console.log('BEGIN getUserInfo at ' + Date.now() + ' ưeather ' + weather);
-  
+    
     const user: User | null = await this.store.getUser();
     
     const userInfo: UserInfo = {
@@ -123,6 +134,19 @@ export class ProcessService extends BaseService implements IProcessService {
     return dto;
   };
   
+  assignWorker = async (userId: string, materialId: string, processId: string): Promise<AssignWorkerDto> => {
+    const sdo: AssignWorkerSdo = await this.processRepo.assignWorker(userId, materialId, processId);
+    let user: User | null = null;
+    if (sdo.isSuccess && sdo.user) {
+      user = this.mappingUser(sdo.user);
+    }
+    return {
+      ...this.populate(sdo),
+      user
+    };
+    
+  }
+  
   private getWeather = async (latitude: number, longitude: number): Promise<Weather> => {
     console.log('BEGIN getWeather at ' + Date.now());
     
@@ -150,7 +174,7 @@ export class ProcessService extends BaseService implements IProcessService {
     const fileNames: string[] = [];
     const fileTypes: string[] = [];
     const fileUris: string[] = [];
-  
+    
     properties.forEach((p: DynProperty): void => {
       if (p.type === DynPropertyType.IMAGE && p.value.startsWith('content')) {
         const name: string = this.genImageName();
@@ -176,4 +200,18 @@ export class ProcessService extends BaseService implements IProcessService {
     const sdo: BaseSdo = await this.processRepo.updateProcessDynProperties(materialId, processId, properties);
     return {...this.populate(sdo)};
   }
+  
+  getProcess = async (materialId: string, processId: string): Promise<ProcessDto> => {
+    const sdo: ProcessSdo = await this.processRepo.getProcess(materialId, processId);
+    let process: Process | null = null;
+    if (sdo.isSuccess && sdo.process) {
+      process = this.mappingProcess(sdo.process);
+    }
+    return {
+      ...this.populate(sdo),
+      process
+    };
+  }
+  
+  
 }

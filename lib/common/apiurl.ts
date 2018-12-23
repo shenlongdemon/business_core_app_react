@@ -38,5 +38,11 @@ const API = {
   UPLOAD_FILES(): string {
     return `${ENV.HOST}/upload/sellrecognizer`;
   },
+  ASSIGN_WORKER(): string {
+    return `${ENV.HOST}/api/sellrecognizer/assignWorker`;
+  },
+  GET_PROCESS(): string {
+    return `${ENV.HOST}/api/sellrecognizer/getProcess`;
+  },
 };
 export { API };
