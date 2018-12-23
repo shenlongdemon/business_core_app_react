@@ -4,10 +4,11 @@ enum TaskStatus {
   done = 2
 }
 
-enum ScanQRItemType {
+enum ObjectType {
   unknown = 0,
   material = 1,
-  product = 2
+  product = 2,
+  user = 3,
 }
 
-export { TaskStatus, ScanQRItemType };
+export { TaskStatus, ObjectType };

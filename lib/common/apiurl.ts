@@ -32,8 +32,8 @@ const API = {
   GET_WEATHER(latitude: number, longitude: number): string {
     return `http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&APPID=6435508fad5982cda8c0a812d7a57860&units=metric`;
   },
-  GET_OBJECT_BY_QRCODE(): string {
-    return `${ENV.HOST}/api/sellrecognizer/getObjectByQRCode`;
+  GET_OBJECT_BY_CODE(): string {
+    return `${ENV.HOST}/api/sellrecognizer/getObjectByCode`;
   },
   UPLOAD_FILES(): string {
     return `${ENV.HOST}/upload/sellrecognizer`;

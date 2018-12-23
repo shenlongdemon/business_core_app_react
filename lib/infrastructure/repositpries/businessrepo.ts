@@ -2,16 +2,17 @@ import { BaseRepository } from "./baserepository";
 import {
   IBusinessRepo,
   GoodsListSdo,
-  ObjectOfQRCodeSdo,
   ProcessListSdo,
   WeatherDataSdo,
   ObjectOfQRCodeRequest,
-  BaseSdo
+  BaseSdo,
+  ObjectByCodeSdo
 } from "../../repositories";
 import { inject, injectable } from "inversify";
 import { IWebApi, ApiResult } from "../../webapi";
 import { PUBLIC_TYPES, PRIVATE_TYPES } from "../identifiers";
 import { STORAGE_KEYS, CONSTANTS, API } from "../../common";
+import {Animated} from "react-native";
 
 @injectable()
 export class BusinessRepo extends BaseRepository implements IBusinessRepo {
@@ -41,12 +42,12 @@ export class BusinessRepo extends BaseRepository implements IBusinessRepo {
     return sdo;
   }
 
-  async getObjectByQRCode(code: string): Promise<ObjectOfQRCodeSdo> {
+  async getObjectByCode(code: string): Promise<ObjectByCodeSdo> {
     const req: ObjectOfQRCodeRequest = {
       code: code
     };
-    const res: ApiResult = await this.api.post(API.GET_OBJECT_BY_QRCODE(), req);
-    const sdo: ObjectOfQRCodeSdo = {
+    const res: ApiResult = await this.api.post(API.GET_OBJECT_BY_CODE(), req);
+    const sdo: ObjectByCodeSdo = {
       ...this.transform(res),
       object: res.data
     };
@@ -59,7 +60,7 @@ export class BusinessRepo extends BaseRepository implements IBusinessRepo {
     const fileUris: string[] = [imageUri];
     const fileTypes: string[] = ['image/png'];
     const res: ApiResult = await  this.api.uploadFiles(API.UPLOAD_FILES(), fileUris, fileNames, fileTypes);
-    const sdo: ObjectOfQRCodeSdo = {
+    const sdo: BaseSdo = {
       ...this.transform(res)
     };
   
@@ -68,7 +69,7 @@ export class BusinessRepo extends BaseRepository implements IBusinessRepo {
   
   uploadFiles = async (fileUris:string[], fileNames: string[], fileTypes: string[], ): Promise<BaseSdo> => {
     const res: ApiResult = await  this.api.uploadFiles(API.UPLOAD_FILES(), fileUris, fileNames, fileTypes);
-    const sdo: ObjectOfQRCodeSdo = {
+    const sdo: BaseSdo = {
       ...this.transform(res)
     };
     

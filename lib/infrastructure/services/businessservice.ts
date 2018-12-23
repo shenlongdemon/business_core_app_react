@@ -1,13 +1,12 @@
 import {
   IBusinessService,
   ItemListDto,
-  ObjectOfQRCodeDto
+  ObjectByCodeDto
 } from "../../services";
 import {
   Item,
   User,
-  ItemHistory,
-  ScanQRItem,
+  ObjectByCode,
   Position
 } from "../../models";
 import {inject, injectable} from "inversify";
@@ -15,9 +14,8 @@ import {PRIVATE_TYPES, PUBLIC_TYPES} from "../identifiers";
 import {
   IBusinessRepo,
   GoodsListSdo,
-  
   IStore,
-  ObjectOfQRCodeSdo
+  ObjectByCodeSdo
 } from "../../repositories";
 import {BaseService} from "./baseservice";
 import {CONSTANTS} from "../../common";
@@ -46,25 +44,18 @@ export class BusinessService extends BaseService implements IBusinessService {
     return itemListDto;
   }
   
-  async getItemHistories(item: Item): Promise<ItemHistory[]> {
-    const histories: ItemHistory[] = [];
-    
-    return histories;
-  }
-  
-  async getObjectByQRCode(code: string): Promise<ObjectOfQRCodeDto> {
-    debugger;
-    const res: ObjectOfQRCodeSdo = await this.businessRepo.getObjectByQRCode(
+  async getObjectByCode(code: string): Promise<ObjectByCodeDto> {
+    const res: ObjectByCodeSdo = await this.businessRepo.getObjectByCode(
       code
     );
-    let item: ScanQRItem | null = null;
+    let item: ObjectByCode | null = null;
     if (res.isSuccess && res.object) {
       item = this.mappingScanQRItem(res.object);
     }
     
-    const dto: ObjectOfQRCodeDto = {
+    const dto: ObjectByCodeDto = {
       ...this.populate(res),
-      object: item
+      item: item
     };
     
     return dto;

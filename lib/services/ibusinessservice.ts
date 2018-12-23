@@ -2,10 +2,9 @@
 
 import {
   ItemListDto,
-  ObjectOfQRCodeDto
+  ObjectByCodeDto
 } from "./dto";
-import {Item, ItemHistory, Position, User} from "../models";
-import {CONSTANTS} from "business_core_app_react";
+import {Position, User} from "../models";
 
 export interface IBusinessService {
   saveCurrentPosition(position: Position): any;
@@ -14,11 +13,9 @@ export interface IBusinessService {
   
   toDateString(time: number): string;
   
-  getItemHistories(item: Item): Promise<ItemHistory[]>;
-  
   getItems(): Promise<ItemListDto>;
   
-  getObjectByQRCode(code: string): Promise<ObjectOfQRCodeDto>;
+  getObjectByCode(code: string): Promise<ObjectByCodeDto>;
   
   getLink(relative: string): string;
   

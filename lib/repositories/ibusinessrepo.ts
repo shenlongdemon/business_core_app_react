@@ -2,7 +2,7 @@
 
 import {
   GoodsListSdo,
-  ObjectOfQRCodeSdo,
+  ObjectByCodeSdo,
   WeatherDataSdo,
   BaseSdo
 } from "./sdo";
@@ -10,7 +10,7 @@ import {
 export interface IBusinessRepo {
   uploadImage(imageName: string, imageUri: string): Promise<BaseSdo>;
   
-  getObjectByQRCode(code: string): Promise<ObjectOfQRCodeSdo>;
+  getObjectByCode(code: string): Promise<ObjectByCodeSdo>;
 
   getWeather(latitude: number, longitude: number): Promise<WeatherDataSdo>;
 

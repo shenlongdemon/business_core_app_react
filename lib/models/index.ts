@@ -6,7 +6,7 @@ export { Material } from "./material";
 export { UserInfo } from "./userinfo";
 export { Position } from "./position";
 export { Weather } from "./weather";
-export { ScanQRItem } from "./scanqritem";
+export { ObjectByCode } from "./objectbycode";
 export { Task } from "./task";
 export { Bluetooth } from "./bluetooth";
 export  *  from "./process";

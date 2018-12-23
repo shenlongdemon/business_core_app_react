@@ -7,7 +7,7 @@ import {
   Material,
   Process,
   ProcessStatus,
-  ScanQRItem,
+  Objectbycode,
   User,
   Weather
 } from '../../models';
@@ -28,8 +28,8 @@ export class BaseService {
     return dto;
   };
   
-  protected mappingScanQRItem(data: any): ScanQRItem | null {
-    const item: ScanQRItem | null = this.mappingByJSON(data);
+  protected mappingScanQRItem(data: any): Objectbycode | null {
+    const item: Objectbycode | null = this.mappingByJSON(data);
     return item;
   }
   

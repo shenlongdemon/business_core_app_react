@@ -6,4 +6,4 @@ export * from "./processdetailsdo";
 export * from "./materialdetailsdo";
 export * from "./weatherdatasdo";
 export * from "./creatematerialsdo";
-export * from "./objectofqrcodesdo";
+export * from "./objectbycodesdo";
