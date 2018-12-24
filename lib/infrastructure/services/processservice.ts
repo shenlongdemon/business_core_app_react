@@ -47,50 +47,50 @@ export class ProcessService extends BaseService implements IProcessService {
   @inject(PRIVATE_TYPES.IProcessRepo) private processRepo!: IProcessRepo;
   @inject(PRIVATE_TYPES.IBusinessRepo) private businessRepo!: IBusinessRepo;
   @inject(PUBLIC_TYPES.IStore) private store!: IStore;
-
+  
   getMaterialDetail = async (id: string): Promise<MaterialDetailDto> => {
     const res: MaterialDetailSdo = await this.processRepo.getMaterialDetail(id);
     let material: Material | null = null;
     if (res.isSuccess && res.material) {
       material = this.mappingMaterial(res.material);
     }
-
+    
     const dto: MaterialDetailDto = {
       ...this.populate(res),
       material: material
     };
-
+    
     return dto;
   };
-
+  
   async getProcesses(): Promise<ProcessListDto> {
     console.log('BEGIN getProcesses at ' + Date.now());
-
+    
     const user: User | null = await this.store.getUser();
     const res: ProcessListSdo = await this.processRepo.getProcesses(user!.id);
     let materials: Material[] = [];
     if (res.isSuccess && res.materials) {
       materials = this.mappingList<Material>(res.materials);
     }
-
+    
     const dto: ProcessListDto = {
       ...this.populate(res),
       materials: materials
     };
     console.log('END getProcesses at ' + Date.now());
-
+    
     return dto;
   }
-
+  
   getUserInfo = async (): Promise<UserInfo> => {
     console.log('BEGIN getUserInfo at ' + Date.now());
     const position: Position | null = await this.store.getCurrentPosition();
     console.log('BEGIN getUserInfo at ' + Date.now() + ' curent position ' + position);
     const weather: Weather = await this.getWeather(position!.latitude, position!.longitude);
     console.log('BEGIN getUserInfo at ' + Date.now() + ' ưeather ' + weather);
-
+    
     const user: User | null = await this.store.getUser();
-
+    
     const userInfo: UserInfo = {
       ...user!,
       code: CONSTANTS.STR_EMPTY,
@@ -100,10 +100,10 @@ export class ProcessService extends BaseService implements IProcessService {
       index: 0
     };
     console.log('BEGIN getUserInfo at ' + Date.now());
-
+    
     return userInfo;
   };
-
+  
   createMaterial = async (
     name: string,
     description: string,
@@ -111,14 +111,14 @@ export class ProcessService extends BaseService implements IProcessService {
     bluetooth: Bluetooth | null
   ): Promise<CreateMaterialDto> => {
     console.log('BEGIN createMaterial at ' + Date.now());
-
+    
     const userInfo: UserInfo = await this.getUserInfo();
     let imageName: string = CONSTANTS.STR_EMPTY;
     if (imageUri !== CONSTANTS.STR_EMPTY) {
       imageName = this.genImageName();
       await this.businessRepo.uploadImage(imageName, imageUri);
     }
-
+    
     const res: CreateMaterialSdo = await this.processRepo.createMaterial(
       name,
       description,
@@ -126,7 +126,7 @@ export class ProcessService extends BaseService implements IProcessService {
       bluetooth,
       userInfo
     );
-
+    
     let material: Material | null = null;
     if (res.isSuccess && res.material) {
       material = this.mappingMaterial(res.material);
@@ -138,7 +138,7 @@ export class ProcessService extends BaseService implements IProcessService {
     console.log('END createMaterial at ' + Date.now());
     return dto;
   };
-
+  
   assignWorker = async (userId: string, materialId: string, processId: string): Promise<AssignWorkerDto> => {
     const sdo: AssignWorkerSdo = await this.processRepo.assignWorker(userId, materialId, processId);
     let user: User | null = null;
@@ -150,30 +150,30 @@ export class ProcessService extends BaseService implements IProcessService {
       user
     };
   };
-
+  
   private getWeather = async (latitude: number, longitude: number): Promise<Weather> => {
     console.log('BEGIN getWeather at ' + Date.now());
-
+    
     const res: WeatherDataSdo = await this.businessRepo.getWeather(latitude, longitude);
     const weather: Weather = this.mappingWeather(res.weather);
     console.log('END getWeather at ' + Date.now());
-
+    
     return weather;
   };
-
+  
   private genImageName = (): string => {
     const imageName: string = `${uuidv4()
-      .toString()
-      .replace(/-/g, '')}.jpg`;
+    .toString()
+    .replace(/-/g, '')}.jpg`;
     return imageName;
   };
   private genPDFName = (): string => {
     const imageName: string = `${uuidv4()
-      .toString()
-      .replace(/-/g, '')}.pdf`;
+    .toString()
+    .replace(/-/g, '')}.pdf`;
     return imageName;
   };
-
+  
   updateProcessDynProperties = async (
     materialId: string,
     processId: string,
@@ -182,7 +182,7 @@ export class ProcessService extends BaseService implements IProcessService {
     const fileNames: string[] = [];
     const fileTypes: string[] = [];
     const fileUris: string[] = [];
-
+    
     properties.forEach(
       (p: DynProperty): void => {
         if (p.type === DynPropertyType.IMAGE && p.value.startsWith('content')) {
@@ -200,15 +200,15 @@ export class ProcessService extends BaseService implements IProcessService {
         }
       }
     );
-
+    
     if (fileUris.length > 0) {
       await this.businessRepo.uploadFiles(fileUris, fileNames, fileTypes);
     }
-
+    
     const sdo: BaseSdo = await this.processRepo.updateProcessDynProperties(materialId, processId, properties);
-    return { ...this.populate(sdo) };
+    return {...this.populate(sdo)};
   };
-
+  
   getProcess = async (materialId: string, processId: string): Promise<ProcessDto> => {
     const sdo: ProcessSdo = await this.processRepo.getProcess(materialId, processId);
     let process: Process | null = null;
@@ -220,7 +220,7 @@ export class ProcessService extends BaseService implements IProcessService {
       process
     };
   };
-
+  
   getActivities = async (materialId: string, processId: string, workerId: string): Promise<ActivitiesListDto> => {
     const sdo: ActivitiesListSdo = await this.processRepo.getActivities(materialId, processId, workerId);
     let activities: Activity[] = [];
@@ -232,7 +232,7 @@ export class ProcessService extends BaseService implements IProcessService {
       activities
     };
   };
-
+  
   addActivity = async (
     materialId: string,
     processId: string,
@@ -253,7 +253,7 @@ export class ProcessService extends BaseService implements IProcessService {
       fileTypes.push('image/png');
       image = name;
     }
-
+    
     if (fileUri !== CONSTANTS.STR_EMPTY) {
       const name: string = this.genPDFName();
       fileUris.push(fileUri);
@@ -278,13 +278,28 @@ export class ProcessService extends BaseService implements IProcessService {
     };
   }
   
-  getLastFinishProcessIndex = (processes: Process[]): number =>{
-    let index : number = 0;
+  getLastFinishProcessIndex = (processes: Process[]): number => {
+    let index: number = 0;
     processes.forEach((process: Process, idx: number): void => {
       if (process.status === ProcessStatus.DONE) {
         index = idx + 1;
       }
     });
     return index;
+  }
+  
+  calcFinishedInPercen = (processes: Process[]): number => {
+    let total: number = 0;
+    let count: number = 0;
+    processes.forEach((process: Process): void => {
+      if (process.status === ProcessStatus.DONE) {
+        count += 2
+      }
+      if (process.status === ProcessStatus.IN_PROGRESS) {
+        count += 1
+      }
+      total += 2;
+    });
+    return count / total;
   }
 }

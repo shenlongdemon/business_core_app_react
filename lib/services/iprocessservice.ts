@@ -12,6 +12,9 @@ import {
 import {Bluetooth, DynProperty, Process} from "../models";
 
 export interface IProcessService {
+  
+  calcFinishedInPercen(processes: Process[]): number;
+  
   getLastFinishProcessIndex(processes: Process[]): number;
   
   doneProcess(materialId: string, processId: string): Promise<BaseDto>;
