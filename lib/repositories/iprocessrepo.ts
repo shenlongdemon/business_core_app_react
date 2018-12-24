@@ -1,9 +1,22 @@
 ///<reference path="../infrastructure/repositpries/processrepo.ts"/>
 
-import {MaterialDetailSdo, CreateMaterialSdo, ProcessListSdo, BaseSdo, AssignWorkerSdo, ProcessSdo} from "./sdo";
+import {
+  MaterialDetailSdo,
+  ActivitiesListSdo,
+  CreateMaterialSdo,
+  ProcessListSdo,
+  BaseSdo,
+  AssignWorkerSdo,
+  ProcessSdo
+} from "./sdo";
 import {Bluetooth} from "../models";
 
 export interface IProcessRepo {
+  doneProcess(materialId: string, processId: string, userInfo: any): Promise<BaseSdo>;
+  addActivity(materialId: string, processId: string, title: string, description: string, image: string, file: string, userInfo: any): BaseSdo | PromiseLike<BaseSdo>;
+  
+  getActivities(materialId: string, processId: string, workerId: string): Promise<ActivitiesListSdo>;
+  
   getProcess(materialId: string, processId: string): Promise<ProcessSdo>;
   
   assignWorker(userId: string, materialId: string, processId: string): Promise<AssignWorkerSdo>;

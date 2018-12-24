@@ -1,18 +1,13 @@
 import {BaseSdo} from "../../repositories";
 import {BaseDto,} from "../../services";
 import {
-  DynProperty,
-  DynPropertyType,
   Item,
   Material,
   Process,
-  ProcessStatus,
-  Objectbycode,
   User,
   Weather
 } from '../../models';
 import {injectable} from "inversify";
-import {CONSTANTS} from "../../common";
 
 @injectable()
 export class BaseService {
@@ -27,11 +22,6 @@ export class BaseService {
     
     return dto;
   };
-  
-  protected mappingScanQRItem(data: any): Objectbycode | null {
-    const item: Objectbycode | null = this.mappingByJSON(data);
-    return item;
-  }
   
   protected mappingWeather = (data: any): Weather  => {
     

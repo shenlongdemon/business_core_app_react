@@ -14,7 +14,8 @@ import {
 import {inject, injectable} from "inversify";
 import {IWebApi, ApiResult} from "../../webapi";
 import {PUBLIC_TYPES} from "../identifiers";
-import { API, API_STATUS_CODE} from "../../common";
+import {API, API_STATUS_CODE} from "../../common";
+import {ActivitiesListSdo} from "business_core_app_react/lib/repositories/sdo/index";
 
 @injectable()
 export class ProcessRepo extends BaseRepository implements IProcessRepo {
@@ -105,6 +106,36 @@ export class ProcessRepo extends BaseRepository implements IProcessRepo {
     return {
       ...this.transform(res),
       process: res.data
+    };
+  }
+  
+  getActivities = async (materialId: string, processId: string, workerId: string): Promise<ActivitiesListSdo> => {
+    const res: ApiResult = await this.api.post(API.GET_ACTIVITIES(), {materialId, processId, workerId});
+    return {
+      ...this.transform(res),
+      activities: res.data
+    };
+  }
+  
+  addActivity = async (materialId: string, processId: string, title: string, description: string, image: string, file: string, userInfo: any): Promise<BaseSdo> => {
+    const res: ApiResult = await this.api.post(API.ADD_ACTIVITY(), {
+      materialId,
+      processId,
+      title,
+      description,
+      image,
+      file,
+      userInfo
+    })
+    return {
+      ...this.transform(res)
+    };
+  }
+  
+  doneProcess = async (materialId: string, processId: string, userInfo: any): Promise<BaseSdo> => {
+    const res: ApiResult = await this.api.post(API.DONE_PROCESS(), {materialId, processId, userInfo})
+    return {
+      ...this.transform(res)
     };
   }
 }

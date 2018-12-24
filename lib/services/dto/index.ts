@@ -9,3 +9,4 @@ export { ObjectByCodeDto } from "./objectbycodedto";
 export { UpdateProcessDto } from "./UpdateProcessDto";
 export { AssignWorkerDto} from "./AssignWorkerDto";
 export { ProcessDto} from "./ProcessDto";
+export * from "./ActivitiesListDto";

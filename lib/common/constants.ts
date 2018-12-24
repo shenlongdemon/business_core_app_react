@@ -1,4 +1,3 @@
-import { ENV } from "business_core_app_react/lib/config";
 
 const STORAGE_KEYS = {
   USER: "@manufacotry:user",
@@ -8,7 +7,7 @@ const STORAGE_KEYS = {
 const CONSTANTS = {
   STR_EMPTY: "",
   DATE_FORMAT: "YYYY-MM-DD",
-  TIME_FORMAT: "HH : MM"
+  TIME_FORMAT: "h : MM A"
 };
 
 const HTTPC_CODE = {

@@ -44,5 +44,14 @@ const API = {
   GET_PROCESS(): string {
     return `${ENV.HOST}/api/sellrecognizer/getProcess`;
   },
+  GET_ACTIVITIES(): string {
+    return `${ENV.HOST}/api/sellrecognizer/getActivities`;
+  },
+  ADD_ACTIVITY(): string {
+    return `${ENV.HOST}/api/sellrecognizer/addActivity`;
+  },
+  DONE_PROCESS(): string {
+    return `${ENV.HOST}/api/sellrecognizer/doneProcess`;
+  },
 };
 export { API };

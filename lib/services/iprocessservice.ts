@@ -1,10 +1,36 @@
 /// <reference path="../infrastructure/services/processservice.ts" />
 
-import {CreateMaterialDto,ProcessDto, MaterialDetailDto, ProcessListDto, BaseDto, AssignWorkerDto} from "./dto";
-import {Bluetooth, DynProperty} from "../models";
+import {
+  CreateMaterialDto,
+  ProcessDto,
+  MaterialDetailDto,
+  ProcessListDto,
+  BaseDto,
+  AssignWorkerDto,
+  ActivitiesListDto,
+} from "./dto";
+import {Bluetooth, DynProperty, Process} from "../models";
 
 export interface IProcessService {
+  getLastFinishProcessIndex(processes: Process[]): number;
+  
+  doneProcess(materialId: string, processId: string): Promise<BaseDto>;
+  
+  /**
+   *
+   * @param materialId
+   * @param processId
+   * @param title
+   * @param description
+   * @param imageUri
+   * @param file
+   */
+  addActivity(materialId: string, processId: string, title: string, description: string, imageUri: string, file: string): Promise<BaseDto>;
+  
+  getActivities(materialId: string, processId: string, workerId: string): Promise<ActivitiesListDto>;
+  
   getProcess(materialId: string, processId: string): Promise<ProcessDto>;
+  
   /**
    * Update process detail with dynamic infomation
    * @param process
@@ -18,7 +44,7 @@ export interface IProcessService {
    * @param id
    */
   getMaterialDetail(id: string): Promise<MaterialDetailDto>;
-
+  
   /**
    * create material
    * @param name name of material
@@ -30,8 +56,8 @@ export interface IProcessService {
     name: string,
     description: string,
     imageUri: string,
-    bluetooth: Bluetooth| null
+    bluetooth: Bluetooth | null
   ): Promise<CreateMaterialDto>;
   
-  assignWorker(userId: string, materialId: string, processId: string) : Promise<AssignWorkerDto>
+  assignWorker(userId: string, materialId: string, processId: string): Promise<AssignWorkerDto>
 }
