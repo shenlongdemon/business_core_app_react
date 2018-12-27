@@ -10,3 +10,6 @@ export { UpdateProcessDto } from "./UpdateProcessDto";
 export { AssignWorkerDto} from "./AssignWorkerDto";
 export { ProcessDto} from "./ProcessDto";
 export * from "./ActivitiesListDto";
+export * from "./CodeDescriptionDto";
+export * from "./ListObjectsByIdsDto";
+export * from "./GetCategoriesDto";

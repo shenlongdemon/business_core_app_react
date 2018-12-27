@@ -4,18 +4,27 @@ import {
   GoodsListSdo,
   ObjectByCodeSdo,
   WeatherDataSdo,
-  BaseSdo
+  BaseSdo,
+  CodeDescriptionSdo,
+  ListObjectsByIdsSdo,
+  GetCategoriesSdo
 } from "./sdo";
 
 export interface IBusinessRepo {
+  getCategories(): Promise<GetCategoriesSdo>;
+  
+  getObjectsByBluetoothIds(ids: string[]): Promise<ListObjectsByIdsSdo>;
+  
+  getCodeDescription(code: string): Promise<CodeDescriptionSdo>;
+  
   uploadImage(imageName: string, imageUri: string): Promise<BaseSdo>;
   
   getObjectByCode(code: string): Promise<ObjectByCodeSdo>;
-
+  
   getWeather(latitude: number, longitude: number): Promise<WeatherDataSdo>;
-
+  
   getItems(userId: string): Promise<GoodsListSdo>;
   
-  uploadFiles (fileUris:string[], fileNames: string[], fileTypes: string[], ): Promise<BaseSdo>;
+  uploadFiles(fileUris: string[], fileNames: string[], fileTypes: string[],): Promise<BaseSdo>;
   
 }

@@ -5,6 +5,7 @@ export { Activity } from "./activity";
 export { Material } from "./material";
 export { UserInfo } from "./userinfo";
 export { Position } from "./position";
+export { Category } from "./category";
 export { Weather } from "./weather";
 export { ObjectByCode } from "./objectbycode";
 export { Task } from "./task";

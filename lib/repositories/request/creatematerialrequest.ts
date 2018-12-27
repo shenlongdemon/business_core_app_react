@@ -1,4 +1,4 @@
-import {Bluetooth, UserInfo} from '../../models';
+import {Bluetooth} from '../../models';
 
 export interface CreateMaterialRequest {
   owner: any;

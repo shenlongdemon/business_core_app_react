@@ -1,13 +1,20 @@
 import {
   IBusinessService,
   ItemListDto,
-  ObjectByCodeDto
+  ObjectByCodeDto,
+  CodeDescriptionDto,
+  ListObjectsByIdsDto,
+  GetCategoriesDto
 } from "../../services";
 import {
   Item,
   User,
   ObjectByCode,
-  Position
+  Position,
+  Material,
+  Activity,
+  Process,
+  Category
 } from "../../models";
 import {inject, injectable} from "inversify";
 import {PRIVATE_TYPES, PUBLIC_TYPES} from "../identifiers";
@@ -15,7 +22,10 @@ import {
   IBusinessRepo,
   GoodsListSdo,
   IStore,
-  ObjectByCodeSdo
+  ObjectByCodeSdo,
+  CodeDescriptionSdo,
+  ListObjectsByIdsSdo,
+  GetCategoriesSdo
 } from "../../repositories";
 import {BaseService} from "./baseservice";
 import {CONSTANTS} from "../../common";
@@ -50,7 +60,7 @@ export class BusinessService extends BaseService implements IBusinessService {
     );
     let item: ObjectByCode | null = null;
     if (res.isSuccess && res.object) {
-      item = this.mappingScanQRItem(res.object);
+      item = this.mappingObject(res.object);
     }
     
     const dto: ObjectByCodeDto = {
@@ -101,5 +111,51 @@ export class BusinessService extends BaseService implements IBusinessService {
     }
     return userId;
   };
+  
+  getCodeDescription = async (code: string): Promise<CodeDescriptionDto> => {
+    const sdo: CodeDescriptionSdo = await this.businessRepo.getCodeDescription(code);
+    let description: string = CONSTANTS.STR_EMPTY;
+    if (sdo.isSuccess && sdo.description) {
+      description = sdo.description as string;
+    }
+    return {
+      ...this.populate(sdo),
+      description
+    };
+  }
+  
+  getActivities = (material: Material): Activity[] => {
+    const activities: Activity[] = [];
+    material.processes.forEach((process: Process): void => {
+      activities.push.apply(activities, process.activities);
+    });
+    return activities;
+  }
+  
+  getObjectsByBluetoothIds = async (ids: string[]): Promise<ListObjectsByIdsDto> =>{
+    const sdo: ListObjectsByIdsSdo = await this.businessRepo.getObjectsByBluetoothIds(ids);
+    let items: ObjectByCode[] = [];
+    if (sdo.isSuccess && sdo.items) {
+      items = this.mappingList(sdo.items);
+    }
+  
+    return {
+      ...this.populate(sdo),
+      items: items
+    };
+  }
+  
+  getCategories = async (): Promise<GetCategoriesDto> =>{
+    const sdo: GetCategoriesSdo = await this.businessRepo.getCategories();
+    let categories: Category[] = [];
+    if (sdo.isSuccess && sdo.categories) {
+      categories = this.mappingList(sdo.categories);
+    }
+  
+    return {
+      ...this.populate(sdo),
+      categories: categories
+    };
+  }
   
 }

@@ -2,11 +2,23 @@
 
 import {
   ItemListDto,
-  ObjectByCodeDto
+  ObjectByCodeDto,
+  CodeDescriptionDto,
+  ListObjectsByIdsDto,
+  GetCategoriesDto
 } from "./dto";
-import {Position, User} from "../models";
+import {Position, User, Activity, Material} from "../models";
 
 export interface IBusinessService {
+  
+  getCategories(): Promise<GetCategoriesDto>;
+  
+  getObjectsByBluetoothIds(ids: string[]): Promise<ListObjectsByIdsDto>;
+  
+  getActivities(material: Material): Activity[];
+  
+  getCodeDescription(code: string): Promise<CodeDescriptionDto>;
+  
   saveCurrentPosition(position: Position): any;
   
   toTimeString(time: number): string;

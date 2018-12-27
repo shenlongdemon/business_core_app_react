@@ -2,17 +2,18 @@ import { BaseRepository } from "./baserepository";
 import {
   IBusinessRepo,
   GoodsListSdo,
-  ProcessListSdo,
   WeatherDataSdo,
   ObjectOfQRCodeRequest,
   BaseSdo,
-  ObjectByCodeSdo
+  ObjectByCodeSdo,
+  CodeDescriptionSdo,
+  ListObjectsByIdsSdo,
+  GetCategoriesSdo
 } from "../../repositories";
 import { inject, injectable } from "inversify";
 import { IWebApi, ApiResult } from "../../webapi";
-import { PUBLIC_TYPES, PRIVATE_TYPES } from "../identifiers";
-import { STORAGE_KEYS, CONSTANTS, API } from "../../common";
-import {Animated} from "react-native";
+import { PUBLIC_TYPES } from "../identifiers";
+import {API } from "../../common";
 
 @injectable()
 export class BusinessRepo extends BaseRepository implements IBusinessRepo {
@@ -74,5 +75,32 @@ export class BusinessRepo extends BaseRepository implements IBusinessRepo {
     };
     
     return sdo;
+  }
+  
+  getCodeDescription = async (code: string): Promise<CodeDescriptionSdo> => {
+    const res: ApiResult = await  this.api.post(API.GeT_CODE_DESCRIPTION(), {code});
+    
+    return {
+      ...this.transform(res),
+      description: res.data
+    };
+  }
+  
+  getObjectsByBluetoothIds = async (ids: string[]): Promise<ListObjectsByIdsSdo> => {
+    const res: ApiResult = await  this.api.post(API.GET_OBJECTS_BY_BLUETOOTH_IDS(), {ids});
+  
+    return {
+      ...this.transform(res),
+      items: res.data
+    };
+  }
+  
+  getCategories = async (): Promise<GetCategoriesSdo> => {
+    const res: ApiResult = await  this.api.get(API.GET_CATEGORIES());
+  
+    return {
+      ...this.transform(res),
+      categories: res.data
+    };
   }
 }

@@ -10,3 +10,6 @@ export * from "./objectbycodesdo";
 export * from "./AssignWorkerSdo";
 export * from "./ProcessSdo";
 export * from "./ActivitiesListSdo";
+export * from "./CodeDescriptionSdo";
+export * from "./ListObjectsByIdsSdo";
+export * from "./GetCategoriesSdo";

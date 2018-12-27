@@ -9,10 +9,12 @@ import {
   AssignWorkerSdo,
   ProcessSdo
 } from "./sdo";
-import {Bluetooth} from "../models";
 
 export interface IProcessRepo {
+  createItem(name: string, price: number, description: string, imageName: string, category: any, bluetooth: any | null, material: any | null, userInfo: any): BaseSdo | PromiseLike<BaseSdo>;
+  
   doneProcess(materialId: string, processId: string, userInfo: any): Promise<BaseSdo>;
+  
   addActivity(materialId: string, processId: string, title: string, description: string, image: string, file: string, userInfo: any): BaseSdo | PromiseLike<BaseSdo>;
   
   getActivities(materialId: string, processId: string, workerId: string): Promise<ActivitiesListSdo>;
@@ -30,7 +32,7 @@ export interface IProcessRepo {
   createMaterial(name: string,
                  description: string,
                  imageName: string,
-                 bluetooth: Bluetooth | null,
+                 bluetooth: any | null,
                  owner: any): Promise<CreateMaterialSdo>;
   
   getMaterialDetail(id: string): Promise<MaterialDetailSdo>;

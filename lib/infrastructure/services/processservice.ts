@@ -38,6 +38,7 @@ import {
   WeatherDataSdo
 } from '../../repositories';
 import {CONSTANTS} from '../../common';
+import {Category} from 'business_core_app_react/lib/models/category';
 
 // @ts-ignore
 const uuidv4 = require('uuid/v4');
@@ -265,7 +266,15 @@ export class ProcessService extends BaseService implements IProcessService {
       await this.businessRepo.uploadFiles(fileUris, fileNames, fileTypes);
     }
     const userInfo: UserInfo = await this.getUserInfo();
-    const sdo: BaseSdo = await this.processRepo.addActivity(materialId, processId, title, description, image, file, userInfo);
+    const sdo: BaseSdo = await this.processRepo.addActivity(
+      materialId,
+      processId,
+      title,
+      description,
+      image,
+      file,
+      userInfo
+    );
     
     return {...this.populate(sdo)};
   };
@@ -276,30 +285,68 @@ export class ProcessService extends BaseService implements IProcessService {
     return {
       ...this.populate(sdo)
     };
-  }
+  };
   
   getLastFinishProcessIndex = (processes: Process[]): number => {
     let index: number = 0;
-    processes.forEach((process: Process, idx: number): void => {
-      if (process.status === ProcessStatus.DONE) {
-        index = idx + 1;
+    processes.forEach(
+      (process: Process, idx: number): void => {
+        if (process.status === ProcessStatus.DONE) {
+          index = idx + 1;
+        }
       }
-    });
+    );
     return index;
-  }
+  };
   
   calcFinishedInPercen = (processes: Process[]): number => {
     let total: number = 0;
     let count: number = 0;
-    processes.forEach((process: Process): void => {
-      if (process.status === ProcessStatus.DONE) {
-        count += 2
+    processes.forEach(
+      (process: Process): void => {
+        if (process.status === ProcessStatus.DONE) {
+          count += 2;
+        }
+        if (process.status === ProcessStatus.IN_PROGRESS) {
+          count += 1;
+        }
+        total += 2;
       }
-      if (process.status === ProcessStatus.IN_PROGRESS) {
-        count += 1
-      }
-      total += 2;
-    });
+    );
     return count / total;
+  };
+  
+  createItem = async (
+    category: Category,
+    name: string,
+    price: number,
+    description: string,
+    imageUri: string,
+    bluetooth: Bluetooth | null,
+    material: Material | null
+  ): Promise<BaseDto> => {
+    
+    const userInfo: UserInfo = await this.getUserInfo();
+    let imageName: string = CONSTANTS.STR_EMPTY;
+    if (imageUri !== CONSTANTS.STR_EMPTY) {
+      imageName = this.genImageName();
+      await this.businessRepo.uploadImage(imageName, imageUri);
+    }
+    
+    const res: BaseSdo = await this.processRepo.createItem(
+      name,
+      price,
+      description,
+      imageName,
+      category,
+      bluetooth,
+      material,
+      userInfo
+    );
+    
+    
+    return {
+      ...this.populate(res)
+    };
   }
 }

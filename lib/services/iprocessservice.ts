@@ -7,18 +7,28 @@ import {
   ProcessListDto,
   BaseDto,
   AssignWorkerDto,
-  ActivitiesListDto,
-} from "./dto";
-import {Bluetooth, DynProperty, Process} from "../models";
+  ActivitiesListDto
+} from './dto';
+import { Bluetooth, DynProperty, Process, Material } from '../models';
+import {Category} from 'business_core_app_react/lib/models/category';
 
 export interface IProcessService {
-  
+  createItem(
+    category: Category,
+    name: string,
+    price: number,
+    description: string,
+    imageUri: string,
+    bluetooth: Bluetooth | null,
+    material: Material | null
+  ): Promise<BaseDto>;
+
   calcFinishedInPercen(processes: Process[]): number;
-  
+
   getLastFinishProcessIndex(processes: Process[]): number;
-  
+
   doneProcess(materialId: string, processId: string): Promise<BaseDto>;
-  
+
   /**
    *
    * @param materialId
@@ -28,26 +38,33 @@ export interface IProcessService {
    * @param imageUri
    * @param file
    */
-  addActivity(materialId: string, processId: string, title: string, description: string, imageUri: string, file: string): Promise<BaseDto>;
-  
+  addActivity(
+    materialId: string,
+    processId: string,
+    title: string,
+    description: string,
+    imageUri: string,
+    file: string
+  ): Promise<BaseDto>;
+
   getActivities(materialId: string, processId: string, workerId: string): Promise<ActivitiesListDto>;
-  
+
   getProcess(materialId: string, processId: string): Promise<ProcessDto>;
-  
+
   /**
    * Update process detail with dynamic infomation
    * @param process
    */
   updateProcessDynProperties(materialId: string, processId: string, properties: DynProperty[]): Promise<BaseDto>;
-  
+
   getProcesses(): Promise<ProcessListDto>;
-  
+
   /**
    * get magerial full detail by id
    * @param id
    */
   getMaterialDetail(id: string): Promise<MaterialDetailDto>;
-  
+
   /**
    * create material
    * @param name name of material
@@ -61,6 +78,6 @@ export interface IProcessService {
     imageUri: string,
     bluetooth: Bluetooth | null
   ): Promise<CreateMaterialDto>;
-  
-  assignWorker(userId: string, materialId: string, processId: string): Promise<AssignWorkerDto>
+
+  assignWorker(userId: string, materialId: string, processId: string): Promise<AssignWorkerDto>;
 }

@@ -26,6 +26,9 @@ const API = {
   CREATE_MATERIAL(): string {
     return `${ENV.HOST}/api/sellrecognizer/createMaterial`;
   },
+  CREATE_ITEM(): string {
+    return `${ENV.HOST}/api/sellrecognizer/createItem`;
+  },
   UPDATE_PROCESS_DYN_PROPERTIES(): string {
     return `${ENV.HOST}/api/sellrecognizer/updateProcessDynProperties`;
   },
@@ -52,6 +55,15 @@ const API = {
   },
   DONE_PROCESS(): string {
     return `${ENV.HOST}/api/sellrecognizer/doneProcess`;
+  },
+  GeT_CODE_DESCRIPTION(): string {
+    return `${ENV.HOST}/api/sellrecognizer/getCodeDescription`;
+  },
+  GET_OBJECTS_BY_BLUETOOTH_IDS(): string {
+    return `${ENV.HOST}/api/sellrecognizer/getObjectsByBluetoothIds`;
+  },
+  GET_CATEGORIES(): string {
+    return `${ENV.HOST}/api/sellrecognizer/getCategories`;
   },
 };
 export { API };
