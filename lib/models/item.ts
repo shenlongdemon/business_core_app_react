@@ -14,7 +14,6 @@ export interface Item extends IObject {
   imageUrl: string;
   code: string;
   sellCode: string;
-  buyerCode: string;
   transactions: Transaction[];
   owner: UserInfo;
   buyer: UserInfo | null;

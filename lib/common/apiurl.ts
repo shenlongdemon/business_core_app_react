@@ -5,12 +5,7 @@ const API = {
     return ENV.HOST + "/api/sellrecognizer/login";
   },
   GET_ITEMS(userId: string): string {
-    return (
-      ENV.HOST +
-      "/api/sellrecognizer/getItemsByOwnerId?ownerId=" +
-      userId +
-      '&pageNum=1&pageSize=10000"'
-    );
+    return `${ENV.HOST}/api/sellrecognizer/getItemsByOwnerId?id=${userId}`;
   },
   GET_PROCESSES(userId: string): string {
     return `${
