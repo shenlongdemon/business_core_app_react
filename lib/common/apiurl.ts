@@ -60,5 +60,8 @@ const API = {
   GET_CATEGORIES(): string {
     return `${ENV.HOST}/api/sellrecognizer/getCategories`;
   },
+  GET_ITEM_BY_ID(id: string): string {
+    return `${ENV.HOST}/api/sellrecognizer/getItemById?id=${id}`;
+  },
 };
 export { API };

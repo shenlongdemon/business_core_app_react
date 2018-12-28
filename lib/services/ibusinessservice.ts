@@ -5,11 +5,13 @@ import {
   ObjectByCodeDto,
   CodeDescriptionDto,
   ListObjectsByIdsDto,
-  GetCategoriesDto
+  GetCategoriesDto,
+  ItemDetailDto
 } from "./dto";
 import {Position, User, Activity, Material} from "../models";
 
 export interface IBusinessService {
+  getItem(id: string): Promise<ItemDetailDto>;
   
   getCategories(): Promise<GetCategoriesDto>;
   

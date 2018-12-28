@@ -8,7 +8,8 @@ import {
   ObjectByCodeSdo,
   CodeDescriptionSdo,
   ListObjectsByIdsSdo,
-  GetCategoriesSdo
+  GetCategoriesSdo,
+  ItemDetailSdo
 } from "../../repositories";
 import { inject, injectable } from "inversify";
 import { IWebApi, ApiResult } from "../../webapi";
@@ -101,6 +102,15 @@ export class BusinessRepo extends BaseRepository implements IBusinessRepo {
     return {
       ...this.transform(res),
       categories: res.data
+    };
+  }
+  
+  getItem = async (id: string): Promise<ItemDetailSdo> => {
+    const res: ApiResult = await  this.api.get(API.GET_ITEM_BY_ID(id));
+  
+    return {
+      ...this.transform(res),
+      item: res.data
     };
   }
 }

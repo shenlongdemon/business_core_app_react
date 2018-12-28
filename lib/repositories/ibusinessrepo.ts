@@ -7,10 +7,13 @@ import {
   BaseSdo,
   CodeDescriptionSdo,
   ListObjectsByIdsSdo,
-  GetCategoriesSdo
+  GetCategoriesSdo,
+  ItemDetailSdo
 } from "./sdo";
 
 export interface IBusinessRepo {
+  getItem(id: string): Promise<ItemDetailSdo>;
+  
   getCategories(): Promise<GetCategoriesSdo>;
   
   getObjectsByBluetoothIds(ids: string[]): Promise<ListObjectsByIdsSdo>;

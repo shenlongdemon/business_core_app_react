@@ -4,7 +4,8 @@ import {
   ObjectByCodeDto,
   CodeDescriptionDto,
   ListObjectsByIdsDto,
-  GetCategoriesDto
+  GetCategoriesDto,
+  ItemDetailDto
 } from "../../services";
 import {
   Item,
@@ -25,7 +26,8 @@ import {
   ObjectByCodeSdo,
   CodeDescriptionSdo,
   ListObjectsByIdsSdo,
-  GetCategoriesSdo
+  GetCategoriesSdo,
+  ItemDetailSdo
 } from "../../repositories";
 import {BaseService} from "./baseservice";
 import {CONSTANTS} from "../../common";
@@ -155,6 +157,19 @@ export class BusinessService extends BaseService implements IBusinessService {
     return {
       ...this.populate(sdo),
       categories: categories
+    };
+  }
+  
+  getItem = async (id: string): Promise<ItemDetailDto> => {
+    const sdo: ItemDetailSdo = await this.businessRepo.getItem(id);
+    let item: Item | null = null;
+    if (sdo.isSuccess && sdo.item) {
+      item = this.mappingObject(sdo.item);
+    }
+  
+    return {
+      ...this.populate(sdo),
+      item
     };
   }
   
