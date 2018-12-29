@@ -8,9 +8,11 @@ import {
   GetCategoriesDto,
   ItemDetailDto
 } from "./dto";
-import {Position, User, Activity, Material} from "../models";
+import {Position, User, Activity, Material, Item} from "../models";
 
 export interface IBusinessService {
+  getAttachFiles(item: Item): string[];
+  
   getItem(id: string): Promise<ItemDetailDto>;
   
   getCategories(): Promise<GetCategoriesDto>;

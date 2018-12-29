@@ -134,26 +134,26 @@ export class BusinessService extends BaseService implements IBusinessService {
     return activities;
   }
   
-  getObjectsByBluetoothIds = async (ids: string[]): Promise<ListObjectsByIdsDto> =>{
+  getObjectsByBluetoothIds = async (ids: string[]): Promise<ListObjectsByIdsDto> => {
     const sdo: ListObjectsByIdsSdo = await this.businessRepo.getObjectsByBluetoothIds(ids);
     let items: ObjectByCode[] = [];
     if (sdo.isSuccess && sdo.items) {
       items = this.mappingList(sdo.items);
     }
-  
+    
     return {
       ...this.populate(sdo),
       items: items
     };
   }
   
-  getCategories = async (): Promise<GetCategoriesDto> =>{
+  getCategories = async (): Promise<GetCategoriesDto> => {
     const sdo: GetCategoriesSdo = await this.businessRepo.getCategories();
     let categories: Category[] = [];
     if (sdo.isSuccess && sdo.categories) {
       categories = this.mappingList(sdo.categories);
     }
-  
+    
     return {
       ...this.populate(sdo),
       categories: categories
@@ -166,11 +166,26 @@ export class BusinessService extends BaseService implements IBusinessService {
     if (sdo.isSuccess && sdo.item) {
       item = this.mappingObject(sdo.item);
     }
-  
+    
     return {
       ...this.populate(sdo),
       item
     };
+  }
+  
+  getAttachFiles = (item: Item): string[] => {
+    const files: string[] = [];
+    if (item.material) {
+      item.material.processes.forEach((p: Process): void => {
+        const fs: string[] = p.activities.map((act: Activity) : string => {
+          return act.file;
+        });
+        files.push.apply(files, fs);
+      });
+    }
+    return files.filter((file: string): boolean => {
+      return file !== CONSTANTS.STR_EMPTY;
+    });
   }
   
 }
