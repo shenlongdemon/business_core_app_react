@@ -48,6 +48,9 @@ const API = {
   ADD_ACTIVITY(): string {
     return `${ENV.HOST}/api/sellrecognizer/addActivity`;
   },
+  ADD_MAINTAIN(): string {
+    return `${ENV.HOST}/api/sellrecognizer/addMaintain`;
+  },
   DONE_PROCESS(): string {
     return `${ENV.HOST}/api/sellrecognizer/doneProcess`;
   },

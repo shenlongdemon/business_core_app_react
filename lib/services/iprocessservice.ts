@@ -46,6 +46,14 @@ export interface IProcessService {
     imageUri: string,
     file: string
   ): Promise<BaseDto>;
+  
+  addMaintain(
+    itemId: string,
+    title: string,
+    description: string,
+    imageUri: string,
+    file: string
+  ): Promise<BaseDto>;
 
   getActivities(materialId: string, processId: string, workerId: string): Promise<ActivitiesListDto>;
 

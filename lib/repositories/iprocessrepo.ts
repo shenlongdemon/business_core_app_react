@@ -11,6 +11,8 @@ import {
 } from "./sdo";
 
 export interface IProcessRepo {
+  addMaintain(itemId: string, title: string, description: string, image: string, file: string, userInfo: any): Promise<BaseSdo>;
+  
   createItem(name: string, price: number, description: string, imageName: string, category: any, bluetooth: any | null, material: any | null, userInfo: any): BaseSdo | PromiseLike<BaseSdo>;
   
   doneProcess(materialId: string, processId: string, userInfo: any): Promise<BaseSdo>;

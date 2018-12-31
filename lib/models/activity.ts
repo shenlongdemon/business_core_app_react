@@ -7,5 +7,5 @@ export interface Activity extends IObject {
   time: number;
   image: string;
   file: string;
-  worker: UserInfo
+  userInfo: UserInfo
 }

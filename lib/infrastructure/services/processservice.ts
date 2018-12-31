@@ -349,4 +349,42 @@ export class ProcessService extends BaseService implements IProcessService {
       ...this.populate(res)
     };
   }
+  
+  addMaintain = async (itemId: string, title: string, description: string,  imageUri: string,
+                       fileUri: string): Promise<BaseDto> => {
+    const fileNames: string[] = [];
+    const fileTypes: string[] = [];
+    const fileUris: string[] = [];
+    let image: string = CONSTANTS.STR_EMPTY;
+    let file: string = CONSTANTS.STR_EMPTY;
+    if (imageUri !== CONSTANTS.STR_EMPTY) {
+      const name: string = this.genImageName();
+      fileUris.push(imageUri);
+      fileNames.push(name);
+      fileTypes.push('image/png');
+      image = name;
+    }
+  
+    if (fileUri !== CONSTANTS.STR_EMPTY) {
+      const name: string = this.genPDFName();
+      fileUris.push(fileUri);
+      fileNames.push(name);
+      fileTypes.push('application/pdf');
+      file = name;
+    }
+    if (fileUris.length > 0) {
+      await this.businessRepo.uploadFiles(fileUris, fileNames, fileTypes);
+    }
+    const userInfo: UserInfo = await this.getUserInfo();
+    const sdo: BaseSdo = await this.processRepo.addMaintain(
+      itemId,
+      title,
+      description,
+      image,
+      file,
+      userInfo
+    );
+  
+    return {...this.populate(sdo)};
+  }
 }

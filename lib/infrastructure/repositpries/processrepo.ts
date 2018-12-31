@@ -168,4 +168,25 @@ export class ProcessRepo extends BaseRepository implements IProcessRepo {
       ...this.transform(res)
     };
   };
+  
+  addMaintain = async (
+    itemId: string,
+    title: string,
+    description: string,
+    image: string,
+    file: string,
+    userInfo: any
+  ): Promise<BaseSdo> => {
+    const res: ApiResult = await this.api.post(API.ADD_MAINTAIN(), {
+      itemId,
+      title,
+      description,
+      image,
+      file,
+      userInfo
+    });
+    return {
+      ...this.transform(res)
+    };
+  };
 }
