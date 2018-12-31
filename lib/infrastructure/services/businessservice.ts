@@ -248,4 +248,18 @@ export class BusinessService extends BaseService implements IBusinessService {
     return `${this.toDateString(time)} ${this.toTimeString(time)}`;
   }
   
+  getAllActivities(item: Item): Activity[] {
+    const activities: Activity[] = [];
+    if (item.material) {
+      item.material.processes.forEach((process: Process): void => {
+        activities.push.apply(activities, process.activities);
+      });
+    }
+    activities.push.apply(activities, item.maintains);
+    
+    return activities.sort((a: Activity, b: Activity): number => {
+      return b.time - a.time;
+    });
+  }
+  
 }

@@ -11,6 +11,8 @@ import {
 import {Position, User, Activity, Material, Item, AttachFile} from "../models";
 
 export interface IBusinessService {
+  getAllActivities(item: Item): Activity[];
+  
   getImages(item: Item): string[];
   
   getAttachFiles(item: Item): AttachFile[];
