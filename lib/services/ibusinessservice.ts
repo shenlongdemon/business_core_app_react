@@ -8,10 +8,12 @@ import {
   GetCategoriesDto,
   ItemDetailDto
 } from "./dto";
-import {Position, User, Activity, Material, Item} from "../models";
+import {Position, User, Activity, Material, Item, AttachFile} from "../models";
 
 export interface IBusinessService {
-  getAttachFiles(item: Item): string[];
+  getImages(item: Item): string[];
+  
+  getAttachFiles(item: Item): AttachFile[];
   
   getItem(id: string): Promise<ItemDetailDto>;
   
@@ -42,4 +44,6 @@ export interface IBusinessService {
   toDateString(time: number): string;
   
   toTimeString(time: number): string;
+  
+  toDateTimeString(time: number): string;
 }

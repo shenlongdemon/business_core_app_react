@@ -11,5 +11,6 @@ export { ObjectByCode } from "./objectbycode";
 export { Task } from "./task";
 export { Bluetooth } from "./bluetooth";
 export  *  from "./process";
+export  *  from "./AttachFile";
 export { DynProperty, DynPropertyType } from "./dynproperty";
 export { ProcessStatus, Process } from "./process";
