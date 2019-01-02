@@ -9,6 +9,7 @@ import {
   ItemDetailDto
 } from "./dto";
 import {Position, User, Activity, Material, Item, AttachFile} from "../models";
+import {Feature, Point} from "@turf/helpers";
 
 export interface IBusinessService {
   getAllActivities(item: Item): Activity[];
@@ -48,4 +49,6 @@ export interface IBusinessService {
   toTimeString(time: number): string;
   
   toDateTimeString(time: number): string;
+  
+  getActivitiesPositions(item: Item): Feature<Point | null>[];
 }

@@ -37,6 +37,8 @@ import {CONSTANTS} from "../../common";
 import {ENV} from "../../config";
 import {LOGGER} from "../../logger";
 import moment from "moment";
+import {Feature, Point} from "@turf/helpers";
+import * as turf from "@turf/turf";
 
 @injectable()
 export class BusinessService extends BaseService implements IBusinessService {
@@ -180,7 +182,7 @@ export class BusinessService extends BaseService implements IBusinessService {
     const files: AttachFile[] = [];
     if (item.material) {
       item.material.processes.forEach((prpcess: Process): void => {
-  
+        
         const imagesOfProcess: AttachFile[] = prpcess.dynProperties.filter((p: DynProperty): boolean => {
           return p.type === DynPropertyType.FILE && p.value !== CONSTANTS.STR_EMPTY
         }).map((p: DynProperty): AttachFile => {
@@ -191,12 +193,12 @@ export class BusinessService extends BaseService implements IBusinessService {
             time: prpcess.updateAt
           };
         });
-  
+        
         files.push.apply(files, imagesOfProcess);
         
-        const fs: AttachFile[] = prpcess.activities.filter((act: Activity) : boolean => {
+        const fs: AttachFile[] = prpcess.activities.filter((act: Activity): boolean => {
           return act.file !== CONSTANTS.STR_EMPTY;
-        }).map((act: Activity) : AttachFile => {
+        }).map((act: Activity): AttachFile => {
           return {
             id: act.id,
             description: act.title,
@@ -228,10 +230,10 @@ export class BusinessService extends BaseService implements IBusinessService {
         }).map((p: DynProperty): string => {
           return p.value
         });
-  
+        
         files.push.apply(files, imagesOfProcess);
         
-        const fs: string[] = p.activities.map((act: Activity) : string => {
+        const fs: string[] = p.activities.map((act: Activity): string => {
           return act.image;
         });
         files.push.apply(files, fs);
@@ -260,6 +262,16 @@ export class BusinessService extends BaseService implements IBusinessService {
     return activities.sort((a: Activity, b: Activity): number => {
       return b.time - a.time;
     });
+  }
+  
+  getActivitiesPositions(item: Item): Feature<Point | null>[] {
+    const activities: Activity[] = this.getAllActivities(item);
+    const points: Feature<Point | null>[] = activities.map((act: Activity): Feature<Point | null> => {
+      const position: Position = act.userInfo.position;
+      return turf.point([position.longitude, position.latitude], {'title': act.title, 'id': act.id}, {id: act.id});
+    });
+    
+    return points;
   }
   
 }
