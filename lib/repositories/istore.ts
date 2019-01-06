@@ -7,7 +7,7 @@
  */
 ///<reference path="../../../../src/infrastructure/asyncstoragestore.ts"/>
 
-import { User, UserInfo, Position } from "../services";
+import { User, UserInfo, Position } from "../models";
 
 export interface IStore {
   /**

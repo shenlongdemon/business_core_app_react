@@ -5,17 +5,19 @@ import {
   ITestService,
   IBusinessService,
   IAuthService,
-  IProcessService
+  IProcessService,
+  IItemService
 } from "../services";
 import {
   TestService,
   BusinessService,
   AuthService,
-  ProcessService
+  ProcessService,
+  ItemService
 } from "./services";
 
-import { IAuthRepo, IBusinessRepo, IProcessRepo } from "../repositories";
-import { AuthRepo, BusinessRepo, ProcessRepo } from "./repositpries";
+import { IAuthRepo, IBusinessRepo, IProcessRepo , IItemRepo} from "../repositories";
+import { AuthRepo, BusinessRepo, ProcessRepo, ItemRepo } from "./repositpries";
 
 import { IWebApi } from "../webapi/iwebapi";
 import { AxiosWebApi } from "./webapi/axioswebapi";
@@ -28,10 +30,12 @@ builder
   .bind<IBusinessService>(PUBLIC_TYPES.IBusinessService)
   .to(BusinessService);
 builder.bind<IProcessService>(PUBLIC_TYPES.IProcessService).to(ProcessService);
+builder.bind<IItemService>(PUBLIC_TYPES.IItemService).to(ItemService);
 
 builder.bind<IAuthRepo>(PRIVATE_TYPES.IAuthRepo).to(AuthRepo);
 builder.bind<IBusinessRepo>(PRIVATE_TYPES.IBusinessRepo).to(BusinessRepo);
 builder.bind<IProcessRepo>(PRIVATE_TYPES.IProcessRepo).to(ProcessRepo);
+builder.bind<ItemRepo>(PRIVATE_TYPES.IItemRepo).to(ItemRepo);
 
 builder
   .bind<IWebApi>(PUBLIC_TYPES.IWebApi)

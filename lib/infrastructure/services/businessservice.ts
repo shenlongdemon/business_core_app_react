@@ -9,6 +9,7 @@ import {
 } from "../../services";
 import {
   Activity,
+  AttachFile,
   Category,
   DynProperty,
   DynPropertyType,
@@ -18,7 +19,7 @@ import {
   Position,
   Process,
   User,
-  AttachFile
+  ItemAction, UserInfo, Weather
 } from "../../models";
 import {inject, injectable} from "inversify";
 import {PRIVATE_TYPES, PUBLIC_TYPES} from "../identifiers";
@@ -30,15 +31,17 @@ import {
   IStore,
   ItemDetailSdo,
   ListObjectsByIdsSdo,
-  ObjectByCodeSdo
+  ObjectByCodeSdo, WeatherDataSdo
 } from "../../repositories";
 import {BaseService} from "./baseservice";
-import {CONSTANTS} from "../../common";
+import {CONSTANTS, ITEM_ACTION} from "../../common";
 import {ENV} from "../../config";
 import {LOGGER} from "../../logger";
 import moment from "moment";
 import {Feature, Point} from "@turf/helpers";
 import * as turf from "@turf/turf";
+// @ts-ignore
+const uuidv4 = require('uuid/v4');
 
 @injectable()
 export class BusinessService extends BaseService implements IBusinessService {
@@ -273,5 +276,92 @@ export class BusinessService extends BaseService implements IBusinessService {
     
     return points;
   }
+  getUserInfo = async (): Promise<UserInfo> => {
+    console.log('BEGIN getUserInfo at ' + Date.now());
+    const position: Position | null = await this.store.getCurrentPosition();
+    console.log('BEGIN getUserInfo at ' + Date.now() + ' curent position ' + position);
+    const weather: Weather = await this.getWeather(position!.latitude, position!.longitude);
+    console.log('BEGIN getUserInfo at ' + Date.now() + ' ưeather ' + weather);
+    
+    const user: User | null = await this.store.getUser();
+    
+    const userInfo: UserInfo = {
+      ...user!,
+      code: CONSTANTS.STR_EMPTY,
+      position: position!,
+      weather: weather,
+      time: Date.now(),
+      index: 0
+    };
+    console.log('BEGIN getUserInfo at ' + Date.now());
+    
+    return userInfo;
+  };
+  
+  private getWeather = async (latitude: number, longitude: number): Promise<Weather> => {
+    console.log('BEGIN getWeather at ' + Date.now());
+    
+    const res: WeatherDataSdo = await this.businessRepo.getWeather(latitude, longitude);
+    const weather: Weather = this.mappingWeather(res.weather);
+    console.log('END getWeather at ' + Date.now());
+    
+    return weather;
+  };
+  
+  
+  
+  getItemAction = async (item: Item): Promise<ItemAction> => {
+    const itemAction: ItemAction = {
+      action : ITEM_ACTION.NONE,
+      text: CONSTANTS.STR_EMPTY,
+      color: CONSTANTS.STR_EMPTY,
+    };
+    const user: User | null = await this.store.getUser();
+    if (!user) {
+      return itemAction;
+    }
+    
+    if (item.sellCode !== CONSTANTS.STR_EMPTY) { // item is published
+      if (item.buyer) { // item is sold
+        if (item.buyer!.id === user.id) { // i am buyer
+          itemAction.action = ITEM_ACTION.RECEIVE;
+          itemAction.text = 'RECEIVE';
+          itemAction.color = '#019f00';
+          
+        }
+        else if (item.owner.id === user.id) { // i am owner
+          itemAction.action = ITEM_ACTION.NONE;
+        }
+      }
+      else { // item is published and is not bought yet
+        if (item.owner.id === user.id) { // i am owner
+          itemAction.action = ITEM_ACTION.CANCEL;
+          itemAction.text = 'CANCEL';
+          itemAction.color = '#9f000a';
+        }
+        else { // i am not owner so i can buy it
+          itemAction.action = ITEM_ACTION.BUY;
+          itemAction.text = 'BUY';
+          itemAction.color = '#d77b14';
+        }
+      }
+    }
+    else if (item.owner.id === user.id) { // i am owner and not publish yet
+      itemAction.action = ITEM_ACTION.PUBLISH;
+      itemAction.text = 'PUBLISH';
+      itemAction.color = '#005a9f';
+    }
+    
+    return itemAction;
+  }
+  
+  isMyItem= async(item: Item): Promise<boolean> =>{
+    const user: User | null  = await this.store.getUser();
+    if (!user) {
+      return false;
+    }
+    return user!.id === item.owner.id;
+  }
+  
   
 }

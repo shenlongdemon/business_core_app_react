@@ -8,11 +8,35 @@ import {
   Weather
 } from '../../models';
 import {injectable} from "inversify";
-
+// @ts-ignore
+const uuidv4 = require('uuid/v4');
 @injectable()
 export class BaseService {
   constructor() {
   }
+  
+  protected mappingList = <T>(items: any[], type: {new(): T} | null = null) : T[] => {
+    const ts: T[] = [];
+    const tData: (T | null)[] = items.map((d: any) => {
+      return this.mappingObject(d, type);
+    });
+    
+    tData.forEach((o: T | null) => {
+      if (o) {
+        ts.push(o);
+      }
+    });
+    
+    return ts;
+  };
+  
+  protected mappingObject = <T> (data: any, type: {new(): T}| null = null) : T | null => {
+    if (type) {
+      const t: T = new type();
+      Object.assign(t, data);
+    }
+    return this.mappingByJSON(data);
+  };
   
   protected populate = (sdo: BaseSdo): BaseDto => {
     const dto: BaseDto = {
@@ -71,31 +95,12 @@ export class BaseService {
     return processes;
   };
   
-  protected mappingList<T>(data: any): T[] {
-    const ts: T[] = [];
-    const tList: (T | null)[] = data.map((g: any) => {
-      const t: T | null = this.mappingByJSON(g);
-      return t;
-    });
-    
-    tList.map((t: T | null) => {
-      if (t) {
-        ts.push(t);
-      }
-    });
-    
-    return ts;
-  }
-  
   protected mappingMaterial(data: any): Material | null {
     const material: Material | null = this.mappingByJSON(data);
     
     return material;
   }
-  protected mappingObject = <T extends {}> (data: any) : T | null => {
-    const t: T | null = this.mappingByJSON(data);
-    return t;
-  }
+ 
   protected mappingProcess = (data: any): Process | null => {
     const process: Process | null = this.mappingByJSON(data);
     return process;
@@ -109,6 +114,19 @@ export class BaseService {
   protected mappingItem = (data: any): Item | null => {
     const item: Item | null = this.mappingByJSON(data);
     return item;
+  };
+  
+  protected genImageName = (): string => {
+    const imageName: string = `${uuidv4()
+    .toString()
+    .replace(/-/g, '')}.jpg`;
+    return imageName;
+  };
+  protected genPDFName = (): string => {
+    const imageName: string = `${uuidv4()
+    .toString()
+    .replace(/-/g, '')}.pdf`;
+    return imageName;
   };
   
   private mappingByJSON = <T>(data: any): T | null => {

@@ -24,7 +24,7 @@ export class ProcessRepo extends BaseRepository implements IProcessRepo {
 
   getMaterialDetail = async (id: string): Promise<MaterialDetailSdo> => {
     const res: ApiResult = await this.api.get(API.GET_MATERIAL(id));
-    let sdo: MaterialDetailSdo = {
+    const sdo: MaterialDetailSdo = {
       ...this.transform(res),
       material: res.data
     };
@@ -143,50 +143,4 @@ export class ProcessRepo extends BaseRepository implements IProcessRepo {
     };
   };
 
-  createItem = async (
-    name: string,
-    price: number,
-    description: string,
-    imageName: string,
-    category: any,
-    bluetooth: any | null,
-    material: any | null,
-    userInfo: any
-  ): Promise<BaseSdo> => {
-    const req: CreateItemRequest = {
-      name,
-      price,
-      description,
-      imageUrl: imageName,
-      bluetooth,
-      material,
-      category,
-      owner: userInfo
-    };
-    const res: ApiResult = await this.api.post(API.CREATE_ITEM(), req);
-    return {
-      ...this.transform(res)
-    };
-  };
-  
-  addMaintain = async (
-    itemId: string,
-    title: string,
-    description: string,
-    image: string,
-    file: string,
-    userInfo: any
-  ): Promise<BaseSdo> => {
-    const res: ApiResult = await this.api.post(API.ADD_MAINTAIN(), {
-      itemId,
-      title,
-      description,
-      image,
-      file,
-      userInfo
-    });
-    return {
-      ...this.transform(res)
-    };
-  };
 }

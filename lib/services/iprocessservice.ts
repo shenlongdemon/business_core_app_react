@@ -9,19 +9,10 @@ import {
   AssignWorkerDto,
   ActivitiesListDto
 } from './dto';
-import { Bluetooth, DynProperty, Process, Material } from '../models';
-import {Category} from 'business_core_app_react/lib/models/category';
+import { Bluetooth, DynProperty, Process } from '../models';
 
 export interface IProcessService {
-  createItem(
-    category: Category,
-    name: string,
-    price: number,
-    description: string,
-    imageUri: string,
-    bluetooth: Bluetooth | null,
-    material: Material | null
-  ): Promise<BaseDto>;
+ 
 
   calcFinishedInPercen(processes: Process[]): number;
 
@@ -47,13 +38,6 @@ export interface IProcessService {
     file: string
   ): Promise<BaseDto>;
   
-  addMaintain(
-    itemId: string,
-    title: string,
-    description: string,
-    imageUri: string,
-    file: string
-  ): Promise<BaseDto>;
 
   getActivities(materialId: string, processId: string, workerId: string): Promise<ActivitiesListDto>;
 

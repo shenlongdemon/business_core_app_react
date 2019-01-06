@@ -1,4 +1,3 @@
-
 const STORAGE_KEYS = {
   USER: "@manufacotry:user",
   CURRENT_POSITION: "@manufacotry:current_position"
@@ -20,4 +19,13 @@ const API_STATUS_CODE = {
   EXCEPTION: -1
 };
 
-export { STORAGE_KEYS, CONSTANTS, HTTPC_CODE, API_STATUS_CODE };
+enum ITEM_ACTION {
+  NONE = 0,
+  SELL = 1,
+  BUY = 2,
+  PUBLISH = 3,
+  CANCEL = 4,
+  RECEIVE = 5
+}
+
+export {STORAGE_KEYS, CONSTANTS, HTTPC_CODE, API_STATUS_CODE, ITEM_ACTION};

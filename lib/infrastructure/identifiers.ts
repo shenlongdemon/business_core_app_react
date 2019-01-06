@@ -4,12 +4,14 @@ const PUBLIC_TYPES = {
   IWebApi: "IWebApi",
   IStore: "IStore",
   IBusinessService: "IBusinessService",
-  IProcessService: "IProcessService"
+  IProcessService: "IProcessService",
+  IItemService: "IItemService",
 };
 const PRIVATE_TYPES = {
   IAuthRepo: "IAuthRepo",
   IBusinessRepo: "IBusinessRepo",
-  IProcessRepo: "IProcessRepo"
+  IProcessRepo: "IProcessRepo",
+  IItemRepo: "IItemRepo",
 };
 
 export { PUBLIC_TYPES, PRIVATE_TYPES };

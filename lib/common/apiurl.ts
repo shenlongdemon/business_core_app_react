@@ -7,6 +7,9 @@ const API = {
   GET_ITEMS(userId: string): string {
     return `${ENV.HOST}/api/sellrecognizer/getItemsByOwnerId?id=${userId}`;
   },
+  GET_PRODUCTS(categoryId: string): string {
+    return `${ENV.HOST}/api/sellrecognizer/getItemsByOwnerId?categoryId=${categoryId}`;
+  },
   GET_PROCESSES(userId: string): string {
     return `${
       ENV.HOST
@@ -65,6 +68,9 @@ const API = {
   },
   GET_ITEM_BY_ID(id: string): string {
     return `${ENV.HOST}/api/sellrecognizer/getItemById?id=${id}`;
+  },
+  DO_ITEM_ACtion(): string {
+    return `${ENV.HOST}/api/sellrecognizer/doItemAction`;
   },
 };
 export { API };

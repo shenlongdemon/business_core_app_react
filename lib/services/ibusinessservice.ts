@@ -8,10 +8,16 @@ import {
   GetCategoriesDto,
   ItemDetailDto
 } from "./dto";
-import {Position, User, Activity, Material, Item, AttachFile} from "../models";
+import {Position, User, Activity, Material, Item, AttachFile, ItemAction, UserInfo} from "../models";
 import {Feature, Point} from "@turf/helpers";
 
 export interface IBusinessService {
+  isMyItem(item: Item): Promise<boolean>;
+  
+  getUserInfo(): Promise<UserInfo>;
+  
+  getItemAction(item: Item): Promise<ItemAction>;
+  
   getAllActivities(item: Item): Activity[];
   
   getImages(item: Item): string[];

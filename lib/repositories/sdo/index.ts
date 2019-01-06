@@ -14,3 +14,4 @@ export * from "./CodeDescriptionSdo";
 export * from "./ListObjectsByIdsSdo";
 export * from "./GetCategoriesSdo";
 export * from "./ItemDetailSdo";
+export * from "./ItemActionSdo";
